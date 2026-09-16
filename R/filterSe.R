@@ -72,7 +72,8 @@ filterSe <- function(
       Value = ifelse(Value > min_abundance, 1, 0)
     ) %>%
     inner_join(
-      as.data.frame(colData(object))
+      get_colData(object),
+      by = sample_col
     ) %>%
     filter(
       !!sym(mz_col) > mz_range[1] & !!sym(mz_col) < mz_range[2],

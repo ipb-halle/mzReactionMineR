@@ -155,6 +155,15 @@ louvainClusteringFeatures <- function(
   # low degree
 
   features_to_remove <- V(G)[degree(G) < min_degree]$name
+
+  if( length(features_to_remove) == length(V(G))) {
+
+    stop(paste0(
+      "All features have degree < ", min_degree, ". Try lowering the threshold."
+    ))
+
+  }
+
   G_clean <- delete_vertices(G, features_to_remove)
 
   print(paste0(
@@ -181,6 +190,14 @@ louvainClusteringFeatures <- function(
     filter(
       n < min_cluster_size
     )
+
+  if( nrow(clusters_to_remove) == length(unique(clusters$cluster)) ) {
+
+    stop(paste0(
+      "No clusters survive threshold of ", min_cluster_size, " features. Try lowering the threshold."
+    ))
+
+  }
 
   print(paste0(
     "Removed ", length(clusters_to_remove$cluster), " cluster with < ",

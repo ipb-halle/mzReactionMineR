@@ -29,7 +29,8 @@ se_to_long <- function(
       values_to = "value"
     ) %>%
     dplyr::inner_join(
-      mzReactionMineR::get_colData(object)
+      mzReactionMineR::get_colData(object),
+      by = filename
     )
   return(df)
 }
