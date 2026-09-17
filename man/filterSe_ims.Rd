@@ -12,6 +12,12 @@ filterSe_ims(
   not_in = "none",
   min_abundance = 0,
   min_pct = 0.8,
+  min_n = 0L,
+  min_pct_total = min_pct,
+  min_n_total = min_n,
+  min_pct_group = min_pct,
+  min_n_group = min_n,
+  min_count_rule = c("or", "and"),
   mz_range = c(0, Inf),
   rt_range = c(0, Inf),
   mobility_range = c(0, Inf),
@@ -40,6 +46,25 @@ in a sample}
 \item{min_pct}{Numeric. Minimum percentage of samples a feature must be
 present in. If group_col is specified, the percentage is calculated for
 for each group.}
+
+\item{min_n}{Integer. Minimum number of samples a feature must be present in.}
+
+\item{min_pct_total}{Numeric. Minimum ratio of all samples a feature must be
+present in. Defaults to min_pct.}
+
+\item{min_n_total}{Integer. Minimum number of all samples a feature must be
+present in. Defaults to min_n.}
+
+\item{min_pct_group}{Numeric. Minimum ratio of samples per group a feature
+must be present in. Defaults to min_pct.}
+
+\item{min_n_group}{Integer. Minimum number of samples per group a feature
+must be present in. Defaults to min_n.}
+
+\item{min_count_rule}{Character. Either "or" or "and". Controls whether
+features must pass the min_n/min_pct threshold per group and total, or
+per group or total. If group_col is "none", only the total threshold is
+used.}
 
 \item{mz_range}{Numeric. A vector of length 2. The range of kept m/z values.}
 

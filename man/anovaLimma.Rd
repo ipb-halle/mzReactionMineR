@@ -31,7 +31,8 @@ Default is "fdr".}
 \item{return_colums}{Character vector. The columns from rowData(object) that are reported in results. Default is c("id", "rt", "mz").}
 }
 \value{
-Returns a data.frame that contains the ANOVA table.
+A data.frame containing the requested feature metadata and the
+limma F-statistic, raw p-value, and adjusted p-value.
 }
 \description{
 A wrapper function that performs an ANOVA test on a summarized experiment using limma.
