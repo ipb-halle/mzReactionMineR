@@ -21,7 +21,7 @@
 #'     experiment and a list of ggplots
 #' @export
 #'
-QC_plots <- function(
+qc_plots <- function(
     path_to_file,
     sample_meta_data,
     what = c(
@@ -269,6 +269,8 @@ QC_plots <- function(
   }
 
 }
+
+QC_plots <- function(...) qc_plots(...)
 
 utils::globalVariables(c(".data", ".", "..density..", "density", "filename",
                          "value"))

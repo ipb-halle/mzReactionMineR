@@ -51,7 +51,7 @@
 #'
 #' @returns A filtered summarizeExperiment object
 #' @export
-filterSe <- function(
+filter_se <- function(
   object = NULL,
   assay = NULL,
   sample_col = "filename",
@@ -193,7 +193,7 @@ filterSe <- function(
   }
 
   row_data <- as.data.frame(rowData(object))
-  sample_data <- get_colData(object)
+  sample_data <- get_col_data(object)
 
   missing_row_columns <- setdiff(
     c(id_col, rt_col, mz_col, if(!is.null(mobility_range)) ion_mobility_col),
@@ -320,5 +320,7 @@ filterSe <- function(
   object[rowData(object)[[id_col]] %in% ids,]
 
 }
+
+filterSe <- function(...) filter_se(...)
 
 utils::globalVariables(c(".",".data","Value"))

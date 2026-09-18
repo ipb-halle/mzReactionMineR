@@ -44,7 +44,7 @@
 #'
 #' @returns A filtered summarizeExperiment object
 #' @export
-filterSe_ims <- function(
+filter_se_ims <- function(
     object = NULL,
     assay = NULL,
     sample_col = "filename",
@@ -66,7 +66,7 @@ filterSe_ims <- function(
     mz_col = "mz",
     ion_mobility_col = "ion_mobility"
 ) {
-  filterSe(
+  filter_se(
     object = object,
     assay = assay,
     sample_col = sample_col,
@@ -90,5 +90,7 @@ filterSe_ims <- function(
   )
 
 }
+
+filterSe_ims <- function(...) filter_se_ims(...)
 
 utils::globalVariables(c(".",".data","Value"))

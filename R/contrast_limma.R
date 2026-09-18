@@ -15,7 +15,7 @@
 #'
 #' @export
 
-contrastLimma <- function(object = NULL,
+contrast_limma <- function(object = NULL,
                        assay = NULL,
                        blocking_variables = NULL,
                        contrast_variable = NULL,
@@ -182,6 +182,8 @@ contrastLimma <- function(object = NULL,
   return(pairwise_res)
 
 }
+
+contrastLimma <- function(...) contrast_limma(...)
 
 utils::globalVariables(c(".data", "."))
 

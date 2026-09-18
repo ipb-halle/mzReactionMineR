@@ -19,7 +19,7 @@
 #' @export
 #'
 
-blankSubtractionSE <- function(
+blank_subtraction_se <- function(
     object = NULL,
     assay = NULL,
     blanks = NULL,
@@ -136,5 +136,7 @@ blankSubtractionSE <- function(
   }
   return(result)
 }
+
+blankSubtractionSE <- function(...) blank_subtraction_se(...)
 
  utils::globalVariables(c(".",".data","Value"))

@@ -43,7 +43,7 @@
 #' @returns A SummarizedExperiment object with a new assay containing the
 #'        normalized intensities.
 #' @export
-normalizeIS <- function(
+normalize_is <- function(
     object,
     assay = NULL,
     rt = NULL,
@@ -86,5 +86,7 @@ normalizeIS <- function(
   return(new_object)
 
 }
+
+normalizeIS <- function(...) normalize_is(...)
 
 utils::globalVariables(c(".data", ".", "mz_diff", "rt_diff"))

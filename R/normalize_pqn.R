@@ -37,7 +37,7 @@
 #' @export
 #
 
-normalizePQN <- function(
+normalize_pqn <- function(
     object,
     assay,
     type = c("median", "mean"),
@@ -115,3 +115,5 @@ normalizePQN <- function(
   )
 
 }
+
+normalizePQN <- function(...) normalize_pqn(...)

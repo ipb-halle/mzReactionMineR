@@ -9,7 +9,7 @@
 #' @returns rowData as data.frame
 #' @export
 #'
-get_rowData <- function(
+get_row_data <- function(
   object = NULL
 ) {
   data <- base::as.data.frame(
@@ -17,3 +17,5 @@ get_rowData <- function(
   )
   return(data)
 }
+
+get_rowData <- function(...) get_row_data(...)

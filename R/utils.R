@@ -52,7 +52,7 @@ get_id <- function(
     stop("'rt_range' must contain two ordered numbers.", call. = FALSE)
   }
 
-  row_data <- get_rowData(object)
+  row_data <- get_row_data(object)
   required_columns <- c(id_col, mz_col, if(!is.null(rt)) rt_col)
   if(any(!required_columns %in% names(row_data))) {
     stop(
@@ -163,7 +163,7 @@ resolve_is_id <- function(
     stop("'rt_tolerance' must be one non-negative finite number.", call. = FALSE)
   }
 
-  row_data <- get_rowData(object)
+  row_data <- get_row_data(object)
   if(!id_col %in% names(row_data)) {
     stop("'id_col' is missing from rowData(", object_name, ").", call. = FALSE)
   }

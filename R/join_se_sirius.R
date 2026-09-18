@@ -26,7 +26,7 @@ join_se_sirius <- function(
     path_to_sirius
   ) %>%
     dplyr::mutate(
-      mappingFeatureId = as(mappingFeatureId, class(get_rowData(object)[[id_col]]))
+      mappingFeatureId = as(mappingFeatureId, class(get_row_data(object)[[id_col]]))
     )
   new_rowData <- dplyr::left_join(
     base::as.data.frame(

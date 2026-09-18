@@ -30,7 +30,7 @@
 #' @returns a data.frame with two columns: "sample" and "cluster".
 #' @export
 #'
-knnClusteringSamples <- function(
+knn_clustering_samples <- function(
   object,
   assay,
   filter_type = "intensity",
@@ -50,13 +50,13 @@ knnClusteringSamples <- function(
   print(paste0("Select top, ", n_top, " features based on", filter_type))
 
   if(filter_type == "intensity") {
-    top_ids <- get_rowData(object)[
+    top_ids <- get_row_data(object)[
       order(rowMaxs(assays(object)[[assay]]), decreasing = TRUE)[1:n_top],
     ][[id_col]]
 
   } else if(filter_type == "variance") {
 
-    top_ids <- get_rowData(object)[
+    top_ids <- get_row_data(object)[
       order(rowVars(assays(object)[[assay]]), decreasing = TRUE)[1:n_top],
     ][[id_col]]
 
@@ -139,3 +139,5 @@ knnClusteringSamples <- function(
   return(knn_clusters)
 
 }
+
+knnClusteringSamples <- function(...) knn_clustering_samples(...)

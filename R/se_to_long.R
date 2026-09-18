@@ -21,7 +21,7 @@ se_to_long <- function(
   filename = "filename"
 ) {
   df <- cbind(
-    mzReactionMineR::get_rowData(object), assays(object)[[assay]]
+    mzReactionMineR::get_row_data(object), assays(object)[[assay]]
   ) %>%
     tidyr::pivot_longer(
       cols = -tidyselect::all_of(colnames(rowData(object))),
@@ -29,7 +29,7 @@ se_to_long <- function(
       values_to = "value"
     ) %>%
     dplyr::inner_join(
-      mzReactionMineR::get_colData(object),
+      mzReactionMineR::get_col_data(object),
       by = filename
     )
   return(df)

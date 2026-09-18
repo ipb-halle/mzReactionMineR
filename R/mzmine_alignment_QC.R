@@ -12,7 +12,7 @@
 #' @export
 #'
 
-mzmine_alignment_QC <- function(
+mzmine_alignment_qc <- function(
     path_to_file,
     rowData_cols = c("id","rt","mz")
 ) {
@@ -45,5 +45,7 @@ mzmine_alignment_QC <- function(
   return(alignment_table)
 
 }
+
+mzmine_alignment_QC <- function(...) mzmine_alignment_qc(...)
 
 

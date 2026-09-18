@@ -18,7 +18,7 @@
 #' @returns a ggplot object
 #' @export
 #'
-plotIS <- function(
+plot_is <- function(
     object,
     assay,
     rt = NULL,
@@ -71,5 +71,7 @@ plotIS <- function(
   return(p)
 
 }
+
+plotIS <- function(...) plot_is(...)
 
 utils::globalVariables(c("x", "y"))

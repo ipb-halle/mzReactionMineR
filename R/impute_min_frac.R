@@ -12,7 +12,7 @@
 #' @returns a SummarizedExperiment object with a new assay containing the imputed values
 #' @export
 #'
-imputeMinFrac <- function(
+impute_min_frac <- function(
     object,
     assay,
     fraction = 5,
@@ -51,3 +51,5 @@ imputeMinFrac <- function(
   assays(object)[[new_assay_name]] <- new_mat
   object
 }
+
+imputeMinFrac <- function(...) impute_min_frac(...)

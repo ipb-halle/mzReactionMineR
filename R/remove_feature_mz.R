@@ -15,7 +15,7 @@
 #' @returns a SummarizedExperiment object with the features removed
 #' @export
 #'
-removeFeatureMz <- function(
+remove_feature_mz <- function(
     object,
     mz,
     mz_tolerance = c(0.005, 5),
@@ -44,3 +44,5 @@ removeFeatureMz <- function(
   return(new_object)
 
 }
+
+removeFeatureMz <- function(...) remove_feature_mz(...)

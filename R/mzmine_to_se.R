@@ -4,7 +4,6 @@
 #'     "Export to CSV (modular)" was used.
 #'
 #' @importFrom utils read.csv
-#' @importFrom dplyr %>% mutate group_by
 #' @importFrom SummarizedExperiment SummarizedExperiment assays rowData colData
 #' @param path_to_file path to the mzmine feature table
 #' @param sample_meta_data data.frame. sample meta data to become colData
@@ -20,124 +19,105 @@
 mzmine_to_se <- function(
     path_to_file,
     sample_meta_data = NULL,
-    assays = NULL,
+    assays = c("area", "height", "mz", "rt"),
     filenames = "filename"
 ) {
 
-  # load feature data
-
-  print("Loading mzMine feature table")
-
-  features <- read.csv(
-    path_to_file
-  ) %>%
-    mutate(
-      id = as.character(id) # convert id from int to character
-    )
-
-  # extract columns with specified assay name
-
-  print("Processing feature table")
-
-
-  if (is.null(assays)) {
-
-    print("Assays not specified, using default: all")
-
-    assays <- names(features[, grepl("datafile[.]", names(features))]) %>%
-      sub(".*\\.", "", .) %>%
-      unique()
-    assays <- assays[!assays %in% c("min","max")]
-
-  } else {
-
-    tmp <- names(features[, grepl("datafile[.]", names(features))]) %>%
-      sub(".*\\.", "", .) %>%
-      unique()
-
-    # if assays are manually specified, check if they are in the feature table
-    if(!all(assays %in% tmp)) {
-      stop("Assay names not found in feature table")
-    } else {
-
-      assays <- assays
-
-    }
+  if (!is.data.frame(sample_meta_data)) {
+    stop("`sample_meta_data` must be a data.frame")
+  }
+  if (!is.character(filenames) || length(filenames) != 1L ||
+      !filenames %in% names(sample_meta_data)) {
+    stop("`filenames` must name a column in `sample_meta_data`")
   }
 
-  # generate list of data matrices
+  features <- tryCatch(
+    read.csv(path_to_file, check.names = TRUE),
+    error = function(error) stop("Could not read feature table: ", error$message)
+  )
+  if (!"id" %in% names(features)) {
+    stop("Feature table must contain an `id` column")
+  }
+  features$id <- as.character(features$id)
 
-  assays_list <- lapply(assays, function(x) {
-    tmp <- features[, grepl("datafile",names(features))] # only datafile columns to avoid issues with other columns that contain the assay name
-    tmp <- tmp[, grepl(paste0("[.]", x,"$"), names(tmp))] # only columns with the specified assay name
-    names(tmp) <- gsub(paste0("[.]",x), "", names(tmp)) # remove the assay name from the column names
-    names(tmp) <- gsub(paste0("datafile[.]"), "", names(tmp)) # remove the "datafile." prefix from the column names
-    names(tmp) <- make.names(names(tmp)) # make the column names valid R variable names
-    return(as.matrix(tmp))
+  datafile_columns <- grep("^datafile[.]", names(features), value = TRUE)
+  if (!length(datafile_columns)) {
+    stop("Feature table does not contain datafile columns")
+  }
+
+  available_assays <- unique(sub(".*[.]", "", datafile_columns))
+  available_assays <- setdiff(available_assays, c("min", "max"))
+  if (is.null(assays)) {
+    assays <- intersect(c("area", "height", "mz", "rt"), available_assays)
+  } else if (!is.character(assays) || !length(assays) ||
+             anyNA(assays) || any(!assays %in% available_assays)) {
+    stop("`assays` must contain only assay names found in the feature table")
+  }
+  if (!length(assays)) {
+    stop("Feature table does not contain any usable assays")
+  }
+
+  assays_list <- lapply(assays, function(assay) {
+    suffix <- paste0(".", assay)
+    columns <- datafile_columns[endsWith(datafile_columns, suffix)]
+    values <- features[columns]
+    names(values) <- make.names(sub("^datafile[.]", "", substr(
+      columns,
+      1L,
+      nchar(columns) - nchar(suffix)
+    )))
+    as.matrix(values)
   })
   names(assays_list) <- assays
 
-  # test for correct sample names
-
-  samples_equal <- all(sapply(assays_list[-1], function(df) {
-    identical(colnames(df), colnames(assays_list[[1]]))
-  }))
-
-  if(!samples_equal) {
-
+  samples <- colnames(assays_list[[1]])
+  if (anyDuplicated(samples)) {
+    stop("Feature table contains duplicate sample names")
+  }
+  if (any(vapply(assays_list, function(x) !identical(colnames(x), samples), logical(1)))) {
     stop("Sample names in the feature table are not equal across assays")
-
-  } else {
-
-    samples <- colnames(assays_list[[1]])
-
   }
 
-  # rename to fit the file names in meta_data
-
-  sample_meta_data[[filenames]] <- make.names(sample_meta_data[[filenames]])
-
-  if(any(!samples %in% sample_meta_data[[filenames]])) {
-    warning("Sample names in the feature table are not equal to sample names in the meta data")
-
-    print(
-      paste0(
-        "Removing sample not present in meta data: ",
-        samples[!samples %in% sample_meta_data[[filenames]]]
-      )
+  sample_meta_data[[filenames]] <- make.names(as.character(sample_meta_data[[filenames]]))
+  if (anyDuplicated(sample_meta_data[[filenames]])) {
+    stop("`sample_meta_data` contains duplicate sample names")
+  }
+  missing_metadata <- setdiff(samples, sample_meta_data[[filenames]])
+  if (length(missing_metadata)) {
+    warning(
+      "Samples in the feature table are not in `sample_meta_data` and will be removed: ",
+      paste(missing_metadata, collapse = ", ")
     )
-
+    assays_list <- lapply(
+      assays_list,
+      function(x) x[, setdiff(samples, missing_metadata), drop = FALSE]
+    )
+    samples <- colnames(assays_list[[1]])
+  }
+  removed_metadata <- setdiff(sample_meta_data[[filenames]], samples)
+  if (length(removed_metadata)) {
+    warning(
+      "Samples in `sample_meta_data` are not in the feature table and will be removed: ",
+      paste(removed_metadata, collapse = ", ")
+    )
     sample_meta_data <- sample_meta_data[
       sample_meta_data[[filenames]] %in% samples,
+      ,
+      drop = FALSE
     ]
-
-    assays_list <- lapply(assays_list, function(x) {
-      x[,sample_meta_data[[filenames]]]
-    })
-
-    samples <- colnames(assays_list[[1]])
-
+  }
+  if (!length(samples)) {
+    stop("No feature-table samples are present in `sample_meta_data`")
   }
 
-  sample_meta_data <- sample_meta_data[
-    match(samples, sample_meta_data[[filenames]]),
-  ]
+  sample_meta_data <- sample_meta_data[match(samples, sample_meta_data[[filenames]]), , drop = FALSE]
+  rowData_cols <- setdiff(names(features), datafile_columns)
 
-  rownames(sample_meta_data) <- sample_meta_data[[filenames]]
-
-  # generate summarized experiment
-
-  print("Creating SummarizedExperiment object")
-
-  rowData_cols <- names(features)[!grepl("datafile[.]",names(features))]
-
-  se <- SummarizedExperiment(
+  SummarizedExperiment(
     rowData = features[,rowData_cols],
     assays = assays_list,
     colData = sample_meta_data
   )
-
-  return(se)
 
 }
 

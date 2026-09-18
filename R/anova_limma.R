@@ -18,7 +18,7 @@
 #'     limma F-statistic, raw p-value, and adjusted p-value.
 #' @export
 
-anovaLimma <- function(object = NULL,
+anova_limma <- function(object = NULL,
                        assay = NULL,
                        blocking_variables = NULL,
                        test_variables = NULL,
@@ -154,3 +154,5 @@ anovaLimma <- function(object = NULL,
 
   return(anova_res[, c(return_colums, "F", "P.Value", "adj.P.Val"), drop = FALSE])
 }
+
+anovaLimma <- function(...) anova_limma(...)

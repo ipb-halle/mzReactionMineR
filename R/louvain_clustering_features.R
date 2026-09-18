@@ -38,7 +38,7 @@
 #' @returns a data.frame with two columns: "sample" and "cluster".
 #' @export
 #'
-louvainClusteringFeatures <- function(
+louvain_clustering_features <- function(
     object,
     assay,
     R_trsh = 0.8,
@@ -62,13 +62,13 @@ louvainClusteringFeatures <- function(
   print(paste0("Select top, ", n_top, " features based on ", filter_type))
 
   if(filter_type == "intensity") {
-    top_ids <- get_rowData(object)[
+    top_ids <- get_row_data(object)[
       order(rowMaxs(assays(object)[[assay]]), decreasing = TRUE)[1:n_top],
     ][[id_col]]
 
   } else if(filter_type == "variance") {
 
-    top_ids <- get_rowData(object)[
+    top_ids <- get_row_data(object)[
       order(rowVars(assays(object)[[assay]]), decreasing = TRUE)[1:n_top],
     ][[id_col]]
 
@@ -267,6 +267,8 @@ louvainClusteringFeatures <- function(
   return(clusters_clean)
 
 }
+
+louvainClusteringFeatures <- function(...) louvain_clustering_features(...)
 
 
 utils::globalVariables(c("cluster", "desc", "cluster_new"))
