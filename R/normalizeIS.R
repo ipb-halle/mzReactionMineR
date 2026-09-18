@@ -58,52 +58,29 @@ normalizeIS <- function(
     rt_col = "rt",
     mz_col = "mz"
 ) {
-
-  if(id != "none") {
-    is_id <- id
-  } else {
-
-    is_id <- get_id(
-      object = object,
-      rt = rt,
-      mz = mz,
-      mz_range = calc_mz_range(mz, mz_tolerance),
-      rt_range = calc_rt_range(rt, rt_tolerance),
-      id_col = id_col,
-      rt_col = rt_col,
-      mz_col = mz_col
-    )
-
-  }
-
-  is_intensities <- get_intensities_id(
-    object = object,
-    assay = assay,
-    id = is_id,
-    id_col = id_col
+  object_name <- object_argument_name(substitute(object))
+  type <- match.arg(type, c("mean", "median"))
+  is_data <- get_is_data(
+    object, assay, rt, mz, id, mz_tolerance, rt_tolerance,
+    id_col, rt_col, mz_col, object_name = object_name
   )
-
-  if(any(is.na(is_intensities))) {
-
-    stop("Internal standard absent in some samples.")
-
-  }
 
   correction_factor <- switch(
     type,
-    mean = is_intensities/mean(is_intensities),
-    median = is_intensities/median(is_intensities)
+    mean = is_data$intensities/mean(is_data$intensities),
+    median = is_data$intensities/median(is_data$intensities)
   )
 
   new_object <- divide_by_feature(
     object = object,
     assay = assay,
     vector = correction_factor,
-    new_assay_name = new_assay_name
+    new_assay_name = new_assay_name,
+    object_name = object_name
     )
 
   if(remove) {
-    new_object <- new_object[-which(rowData(new_object)[[id_col]] == is_id), ]
+    new_object <- new_object[-which(rowData(new_object)[[id_col]] == is_data$id), ]
   }
 
   return(new_object)

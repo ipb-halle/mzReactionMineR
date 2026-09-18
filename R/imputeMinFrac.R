@@ -18,14 +18,36 @@ imputeMinFrac <- function(
     fraction = 5,
     new_assay_name = "imputed"
 ) {
+  object_name <- object_argument_name(substitute(object))
 
-  new_object <- object
+  if (!inherits(object, "SummarizedExperiment")) {
+    stop(sprintf("`%s` must be a SummarizedExperiment object.", object_name))
+  }
+  if (!assay %in% names(assays(object))) {
+    stop(sprintf("Assay '%s' was not found in `%s`.", assay, object_name))
+  }
+  if (!is.numeric(fraction) || length(fraction) != 1L || is.na(fraction) || fraction <= 0) {
+    stop("`fraction` must be a single positive numeric value.")
+  }
+  if (!is.character(new_assay_name) || length(new_assay_name) != 1L || !nzchar(new_assay_name)) {
+    stop("`new_assay_name` must be a non-empty character string.")
+  }
+  if (new_assay_name %in% names(assays(object))) {
+    warning(sprintf("Assay '%s' already exists in `%s`. It will be overwritten.", new_assay_name, object_name))
+  }
 
-  assays(new_object)[[new_assay_name]] <- t(apply(
-    assays(new_object)[[assay]], 1, function(row) {
-      replace(row, is.na(row), min(row, na.rm = TRUE)/5)
-    }))
+  mat <- assays(object)[[assay]]
+  if (!is.numeric(mat)) {
+    stop(sprintf("Assay '%s' must contain numeric values.", assay))
+  }
 
-  return(new_object)
+  new_mat <- t(apply(mat, 1, function(row) {
+    if (all(is.na(row))) {
+      stop(sprintf("Cannot impute missing values in assay '%s' because at least one row contains only NA values.", assay))
+    }
+    replace(row, is.na(row), min(row, na.rm = TRUE) / fraction)
+  }))
 
+  assays(object)[[new_assay_name]] <- new_mat
+  object
 }

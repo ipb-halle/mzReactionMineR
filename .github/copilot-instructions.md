@@ -11,6 +11,8 @@ This repository contains an R package for the analysis of mass spectrometry data
 - spectral similarity - a measure as to how similar two features are. Usually based on their ms2 spectra.
 - alignment - the process of matching features across different samples to account for variations in retention time, mass-to-charge ratio, and optionally ion mobility or spectral similarity, ensuring that the same feature is consistently identified across all samples.
 - mass difference network - a network where nodes represent features and edges represent the mass differences between them, often used to infer potential biochemical relationships or reactions between the features.
+- is - internal standard. A compound added to samples in a known quantity to help with the normalization of the measured features.
+- blank - a sample that does not contain the analyte of interest and is used to identify background signals and contaminants.
 
 ## Architecture
 Contains mainly helper functions and wrappers that facilitate the manipulation, analysis, and visualization of mass spectrometry data within the R environment. Any utility functions that should not be used by the end-user directly are written in the utils.R file.
@@ -33,3 +35,16 @@ Contains mainly helper functions and wrappers that facilitate the manipulation, 
 - Write unit tests for all new functionality to ensure correctness and reliability.
 - Ensure that the code adheres to the overall architecture and design principles of the project.
 - add error handling to ensure that the code gracefully handles unexpected inputs and edge cases.
+
+## Tooling
+
+When running Git commands, use:
+
+C:\Program Files\Git\bin\git.exe
+
+When running R scripts, use:
+
+C:\Program Files\R\R-4.6.1\bin\Rscript.exe
+
+Do not assume these executables are available via PATH.
+Always use the full paths above when executing commands.

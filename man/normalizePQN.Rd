@@ -2,24 +2,42 @@
 % Please edit documentation in R/normalizePQN.R
 \name{normalizePQN}
 \alias{normalizePQN}
-\title{normalizePQN}
+\title{Probabilistic Quotient Normalization (PQN)}
 \usage{
-normalizePQN(data, measure = c("median", "mean"))
+normalizePQN(
+  object,
+  assay,
+  type = c("median", "mean"),
+  reference_samples = NULL,
+  new_assay_name = "pqn_normalized"
+)
 }
 \arguments{
-\item{data}{Input data to be normalized. Usually a numeric matrix.}
+\item{object}{A SummarizedExperiment object.}
 
-\item{measure}{What measure to be used for the normalization factor.
+\item{assay}{Character. The name of the assay to be normalized.}
+
+\item{type}{What measure to be used for the normalization factor.
 Can be "median" or "mean".}
+
+\item{reference_samples}{Samples used to calculate the feature reference.
+Character vector of unique sample names. Defaults to all samples.}
+
+\item{new_assay_name}{Character. The name of the new assay containing the
+normalized values. Defaults to "pqn_normalized".}
 }
 \value{
-A matrix containing normalized values.
+A SummarizedExperiment object with a new assay containing the
+normalized values.
 }
 \description{
-Probabilistsic quotient normalization (PQN) is a method to normalize data by
-dividing each value within a sample by a normalization factor.
+This function performs probabilistic quotient normalization on a
+SummarizedExperiment assay.
 }
 \details{
+Probabilistsic quotient normalization (PQN) is a method to normalize data by
+dividing each value within a sample by a normalization factor.
+
 \deqn{normalization\_factor = median \left( \frac{value_{i,j}}{median(feature_i)} \right)}
 
 Where \eqn{value_{i,j}} is the value of the i-th feature in the j-th sample and

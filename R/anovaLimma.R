@@ -24,14 +24,15 @@ anovaLimma <- function(object = NULL,
                        test_variables = NULL,
                        padj_method = "fdr",
                        return_colums = c("id", "rt", "mz")) {
+  object_name <- object_argument_name(substitute(object))
 
   if(!inherits(object, "SummarizedExperiment")) {
-    stop("'object' must be a SummarizedExperiment.")
+    stop("'", object_name, "' must be a SummarizedExperiment.")
   }
 
   if(length(assay) != 1L || !is.character(assay) ||
      !assay %in% SummarizedExperiment::assayNames(object)) {
-    stop("'assay' must name an assay in 'object'.")
+    stop("'assay' must name an assay in '", object_name, "'.")
   }
 
   if(length(test_variables) == 0L || !is.character(test_variables)) {
@@ -72,7 +73,7 @@ anovaLimma <- function(object = NULL,
 
   if(length(missing_variables) > 0L) {
     stop(
-      "The following design columns are missing from colData(object): ",
+      "The following design columns are missing from colData(", object_name, "): ",
       paste(missing_variables, collapse = ", ")
     )
   }
@@ -96,7 +97,7 @@ anovaLimma <- function(object = NULL,
   missing_return_columns <- setdiff(return_colums, colnames(row_data))
   if(length(missing_return_columns) > 0L) {
     stop(
-      "The following return columns are missing from rowData(object): ",
+      "The following return columns are missing from rowData(", object_name, "): ",
       paste(missing_return_columns, collapse = ", ")
     )
   }

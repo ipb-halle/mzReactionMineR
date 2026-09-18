@@ -32,4 +32,4 @@ Config/testthat/edition: 3
 RemoteType: local
 RemotePkgRef: local::../../packages/mzReactionMineR/
 RemoteUrl: C:/Users/druesche/Documents/packages/mzReactionMineR
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0

@@ -155,10 +155,11 @@ test_that("filterSe_ims forwards grouped and total abundance filters", {
 
 test_that("filterSe validates object and assay inputs", {
   object <- make_filter_object()
+  input_object <- data.frame()
 
   expect_error(
-    filterSe(object = data.frame(), assay = "intensity"),
-    "object.*SummarizedExperiment"
+    filterSe(object = input_object, assay = "intensity"),
+    "input_object.*SummarizedExperiment"
   )
   expect_error(
     filterSe(object = object, assay = "missing"),

@@ -74,16 +74,17 @@ filterSe <- function(
   mz_col = "mz",
   ion_mobility_col = "ion_mobility"
 ) {
+  object_name <- object_argument_name(substitute(object))
 
   min_count_rule <- match.arg(min_count_rule)
 
   if(!inherits(object, "SummarizedExperiment")) {
-    stop("'object' must be a SummarizedExperiment.", call. = FALSE)
+    stop("'", object_name, "' must be a SummarizedExperiment.", call. = FALSE)
   }
 
   if(length(assay) != 1L || !is.character(assay) ||
      !assay %in% SummarizedExperiment::assayNames(object)) {
-    stop("'assay' must name an assay in 'object'.", call. = FALSE)
+    stop("'assay' must name an assay in '", object_name, "'.", call. = FALSE)
   }
 
   character_arguments <- list(
@@ -118,7 +119,7 @@ filterSe <- function(
   }
 
   if(group_col == "none" && all(not_in != "none")) {
-    stop("'not_in' can only be used when 'group_col' names a colData(object) column.", call. = FALSE)
+    stop("'not_in' can only be used when 'group_col' names a colData(", object_name, ") column.", call. = FALSE)
   }
 
   if(length(min_abundance) != 1L || !is.numeric(min_abundance) ||
@@ -200,7 +201,7 @@ filterSe <- function(
   )
   if(length(missing_row_columns) > 0L) {
     stop(
-      "The following columns are missing from rowData(object): ",
+      "The following columns are missing from rowData(", object_name, "): ",
       paste(missing_row_columns, collapse = ", "),
       call. = FALSE
     )
@@ -212,7 +213,7 @@ filterSe <- function(
   )
   if(length(missing_col_columns) > 0L) {
     stop(
-      "The following columns are missing from colData(object): ",
+      "The following columns are missing from colData(", object_name, "): ",
       paste(missing_col_columns, collapse = ", "),
       call. = FALSE
     )
@@ -221,7 +222,7 @@ filterSe <- function(
   missing_assay_samples <- setdiff(colnames(assays(object)[[assay]]), sample_data[[sample_col]])
   if(length(missing_assay_samples) > 0L) {
     stop(
-      "The following assay column names are missing from colData(object)[['", sample_col, "']]: ",
+      "The following assay column names are missing from colData(", object_name, ")[[\'", sample_col, "\']]: ",
       paste(missing_assay_samples, collapse = ", "),
       call. = FALSE
     )
@@ -231,7 +232,7 @@ filterSe <- function(
     missing_not_in <- setdiff(not_in, sample_data[[group_col]])
     if(length(missing_not_in) > 0L) {
       stop(
-        "The following 'not_in' values are missing from colData(object)[['", group_col, "']]: ",
+        "The following 'not_in' values are missing from colData(", object_name, ")[[\'", group_col, "\']]: ",
         paste(missing_not_in, collapse = ", "),
         call. = FALSE
       )

@@ -30,32 +30,15 @@ plotIS <- function(
     rt_col = "rt",
     mz_col = "mz"
 ) {
-
-  if(id != "none") {
-    is_id <- id
-  } else {
-
-    is_id <- get_id(
-      object = object,
-      rt = rt,
-      mz = mz,
-      mz_range = calc_mz_range(mz, mz_tolerance),
-      rt_range = calc_rt_range(rt, rt_tolerance),
-      id_col = id_col,
-      rt_col = rt_col,
-      mz_col = mz_col
-    )
-
-  }
+  object_name <- object_argument_name(substitute(object))
+  is_data <- get_is_data(
+    object, assay, rt, mz, id, mz_tolerance, rt_tolerance,
+    id_col, rt_col, mz_col, object_name = object_name
+  )
 
   plot_data <- data.frame(
     x = 1:ncol(object),
-    y = get_intensities_id(
-      object = object,
-      assay = assay,
-      id = is_id,
-      id_col = id_col
-    )
+    y = is_data$intensities
   )
 
   p <- ggplot(

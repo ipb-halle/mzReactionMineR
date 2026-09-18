@@ -15,15 +15,17 @@ make_anova_object <- function() {
 }
 
 test_that("anovaLimma validates its object and assay", {
+  input_object <- data.frame()
+
   expect_error(
-    anovaLimma(object = data.frame(), assay = "intensity", test_variables = "group"),
-    "object.*SummarizedExperiment"
+    anovaLimma(object = input_object, assay = "intensity", test_variables = "group"),
+    "input_object.*SummarizedExperiment"
   )
 
   object <- make_anova_object()
   expect_error(
     anovaLimma(object = object, assay = "missing", test_variables = "group"),
-    "assay.*name.*assay"
+    "assay.*name.*assay.*object"
   )
 })
 

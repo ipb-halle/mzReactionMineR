@@ -26,77 +26,97 @@ export(plotIS)
 export(removeFeatureMz)
 export(se_to_long)
 import(ggplot2)
-importFrom(MatrixGenerics,rowMaxs)
-importFrom(MatrixGenerics,rowMedians)
-importFrom(MatrixGenerics,rowVars)
-importFrom(MsCoreUtils,gnps)
-importFrom(MsCoreUtils,join_gnps)
-importFrom(Spectra,acquisitionNum)
-importFrom(Spectra,applyProcessing)
-importFrom(Spectra,filterIntensity)
-importFrom(Spectra,filterMzValues)
-importFrom(Spectra,filterPrecursorPeaks)
-importFrom(Spectra,intensity)
-importFrom(Spectra,mz)
-importFrom(Spectra,peaksData)
-importFrom(Spectra,precursorMz)
-importFrom(SummarizedExperiment,"assays<-")
-importFrom(SummarizedExperiment,SummarizedExperiment)
-importFrom(SummarizedExperiment,assays)
-importFrom(SummarizedExperiment,colData)
-importFrom(SummarizedExperiment,rowData)
-importFrom(dplyr,"%>%")
-importFrom(dplyr,across)
-importFrom(dplyr,arrange)
-importFrom(dplyr,between)
-importFrom(dplyr,bind_rows)
-importFrom(dplyr,filter)
-importFrom(dplyr,group_by)
-importFrom(dplyr,if_else)
-importFrom(dplyr,inner_join)
-importFrom(dplyr,left_join)
-importFrom(dplyr,mutate)
-importFrom(dplyr,mutate_if)
-importFrom(dplyr,n)
-importFrom(dplyr,pull)
-importFrom(dplyr,right_join)
-importFrom(dplyr,row_number)
-importFrom(dplyr,select)
-importFrom(dplyr,slice_min)
-importFrom(dplyr,summarize)
-importFrom(dplyr,summarize_at)
-importFrom(dplyr,sym)
-importFrom(dplyr,ungroup)
+importFrom(MatrixGenerics,
+  rowMaxs,
+  rowMedians,
+  rowVars
+)
+importFrom(MsCoreUtils,
+  gnps,
+  join_gnps
+)
+importFrom(Spectra,
+  acquisitionNum,
+  applyProcessing,
+  filterIntensity,
+  filterMzValues,
+  filterPrecursorPeaks,
+  intensity,
+  mz,
+  peaksData,
+  precursorMz
+)
+importFrom(SummarizedExperiment,
+  "assays<-",
+  SummarizedExperiment,
+  assays,
+  colData,
+  rowData
+)
+importFrom(dplyr,
+  "%>%",
+  across,
+  arrange,
+  between,
+  bind_rows,
+  filter,
+  group_by,
+  if_else,
+  inner_join,
+  left_join,
+  mutate,
+  mutate_if,
+  n,
+  pull,
+  right_join,
+  row_number,
+  select,
+  slice_min,
+  summarize,
+  summarize_at,
+  sym,
+  ungroup
+)
 importFrom(grDevices,nclass.Sturges)
-importFrom(igraph,"vertex_attr<-")
-importFrom(igraph,V)
-importFrom(igraph,cluster_louvain)
-importFrom(igraph,degree)
-importFrom(igraph,delete_vertices)
-importFrom(igraph,graph_from_adjacency_matrix)
-importFrom(igraph,membership)
-importFrom(igraph,subgraph)
-importFrom(igraph,vertex_attr)
-importFrom(limma,contrasts.fit)
-importFrom(limma,eBayes)
-importFrom(limma,lmFit)
-importFrom(limma,makeContrasts)
-importFrom(limma,topTable)
-importFrom(methods,as)
-importFrom(methods,new)
-importFrom(methods,setClass)
+importFrom(igraph,
+  "vertex_attr<-",
+  V,
+  cluster_louvain,
+  degree,
+  delete_vertices,
+  graph_from_adjacency_matrix,
+  membership,
+  subgraph,
+  vertex_attr
+)
+importFrom(limma,
+  contrasts.fit,
+  eBayes,
+  lmFit,
+  makeContrasts,
+  topTable
+)
+importFrom(methods,
+  as,
+  new,
+  setClass
+)
 importFrom(rlang,":=")
-importFrom(stats,"contrasts<-")
-importFrom(stats,as.formula)
-importFrom(stats,contr.sum)
-importFrom(stats,contrasts)
-importFrom(stats,cor)
-importFrom(stats,dist)
-importFrom(stats,median)
-importFrom(stats,model.matrix)
-importFrom(stats,prcomp)
-importFrom(stats,setNames)
+importFrom(stats,
+  "contrasts<-",
+  as.formula,
+  contr.sum,
+  contrasts,
+  cor,
+  dist,
+  median,
+  model.matrix,
+  prcomp,
+  setNames
+)
 importFrom(tidyr,pivot_longer)
 importFrom(tidyselect,all_of)
-importFrom(utils,read.csv)
-importFrom(utils,read.delim)
+importFrom(utils,
+  read.csv,
+  read.delim
+)
