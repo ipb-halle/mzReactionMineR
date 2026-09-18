@@ -12,8 +12,8 @@
 get_row_data <- function(
   object = NULL
 ) {
-  data <- base::as.data.frame(
-    SummarizedExperiment::rowData(object)
+  data <- as.data.frame(
+    rowData(object)
   )
   return(data)
 }

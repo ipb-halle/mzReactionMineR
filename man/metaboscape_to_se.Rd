@@ -2,9 +2,7 @@
 % Please edit documentation in R/metaboscape_to_se.R
 \name{metaboscape_to_se}
 \alias{metaboscape_to_se}
-\title{metaboscape_to_se
-A function that converts the output of a metaboscape analysis into a
-SummarizedExperiment Object.}
+\title{Convert MetaboScape output to a SummarizedExperiment}
 \usage{
 metaboscape_to_se(
   path_to_file,
@@ -28,7 +26,5 @@ that contains the column names of the metaboscape output. Default is "filename".
 a SummarizedExperiment Object
 }
 \description{
-metaboscape_to_se
-A function that converts the output of a metaboscape analysis into a
-SummarizedExperiment Object.
+This legacy wrapper delegates to \code{\link[=feature_table_to_se]{feature_table_to_se()}}.
 }

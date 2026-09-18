@@ -13,6 +13,10 @@ This repository contains an R package for the analysis of mass spectrometry data
 - mass difference network - a network where nodes represent features and edges represent the mass differences between them, often used to infer potential biochemical relationships or reactions between the features.
 - is - internal standard. A compound added to samples in a known quantity to help with the normalization of the measured features.
 - blank - a sample that does not contain the analyte of interest and is used to identify background signals and contaminants.
+- mzmine - aka MZmine or mzMine. A popular open-source software for mass spectrometry data processing, including feature detection, alignment, and quantification.
+- MetaboScape - a software developed by Bruker for the analysis of mass spectrometry data, including feature detection, alignment, and quantification, often used in conjunction with Bruker instruments.
+- SIRIUS - a software for the analysis of mass spectrometry data, particularly for the identification of molecular formulas and structures based on tandem mass spectrometry (MS2) data.
+- feature table - a structured representation of detected features in the mass spectrometry data. Rows typically correspond to features. Columns contain various information about the feature and intensities across different samples.
 
 ## Architecture
 Contains mainly helper functions and wrappers that facilitate the manipulation, analysis, and visualization of mass spectrometry data within the R environment. Any utility functions that should not be used by the end-user directly are written in the utils.R file.

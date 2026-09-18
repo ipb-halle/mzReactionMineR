@@ -7,7 +7,7 @@
 mzmine_to_se(
   path_to_file,
   sample_meta_data = NULL,
-  assays = NULL,
+  assays = c("area", "height", "mz", "rt"),
   filenames = "filename"
 )
 }

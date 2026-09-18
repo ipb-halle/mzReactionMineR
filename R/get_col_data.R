@@ -12,7 +12,7 @@
 get_col_data <- function(
     object = NULL
 ) {
-  data <- base::as.data.frame(
+  data <- as.data.frame(
     SummarizedExperiment::colData(object)
   )
   return(data)
