@@ -14,32 +14,60 @@
 #' @export
 #'
 modified_cosine <- function(sps, tolerance = 0, ppm = 10) {
-  # generate empty matrix
-  modified_cosine <- matrix(
-    NA_real_,
-    nrow = length(sps),
-    ncol = length(sps)
-  )
-  colnames(modified_cosine) <- acquisitionNum(sps)
-  rownames(modified_cosine) <- acquisitionNum(sps)
-  # loop over all spectra
-  for(i in 1:length(sps)) {
-    # define precursor mz and peak data for i
-    spectrum_i <- peaksData(sps[i])[[1]]
+  # Validate the core inputs before accessing spectrum metadata.
+  if (!methods::is(sps, "Spectra")) {
+    stop("sps must be a Spectra object.", call. = FALSE)
+  }
+  if (length(tolerance) != 1L || !is.numeric(tolerance) || is.na(tolerance) ||
+      !is.finite(tolerance) || tolerance < 0) {
+    stop("tolerance must be a single non-negative numeric value.", call. = FALSE)
+  }
+  if (length(ppm) != 1L || !is.numeric(ppm) || is.na(ppm) ||
+      !is.finite(ppm) || ppm < 0) {
+    stop("ppm must be a single non-negative numeric value.", call. = FALSE)
+  }
+
+  n <- length(sps)
+  if (!n) {
+    return(matrix(NA_real_, nrow = 0L, ncol = 0L))
+  }
+
+  # Fill only the upper triangle; diagonal and lower triangle remain NA.
+  scores <- matrix(NA_real_, nrow = n, ncol = n)
+  rownames(scores) <- colnames(scores) <- acquisitionNum(sps)
+
+  for (i in seq_len(n)) {
+    spectrum_i <- peaksData(sps[i])[[1L]]
     precursor_mz_i <- precursorMz(sps[i])
-    # compare spectrum i against all other spectra
-    for(j in 1:length(sps)) {
-      # only generate scores for upper triangular matrix
-      if(i < j) {
-        # define precursor mz and peak data for j
-        spectrum_j <- peaksData(sps[j])[[1]]
-        precursor_mz_j <- precursorMz(sps[j])
-        # use Spectra function to join MS/MS data
-        map <- join_gnps(spectrum_i[, 1], spectrum_j[, 1], precursor_mz_i, precursor_mz_j, ppm = ppm)
-        # calculate modified cosine
-        modified_cosine[i,j] <- gnps(spectrum_i[map[[1]], ], spectrum_j[map[[2]], ])
+
+    for (j in seq_len(n)) {
+      if (i >= j) {
+        next
       }
+      spectrum_j <- peaksData(sps[j])[[1L]]
+      precursor_mz_j <- precursorMz(sps[j])
+
+      if (!nrow(spectrum_i) || !nrow(spectrum_j)) {
+        next
+      }
+
+      # Match peaks using precursor m/z and the requested tolerance window.
+      map <- join_gnps(
+        x = spectrum_i[, 1L],
+        y = spectrum_j[, 1L],
+        xPrecursorMz = precursor_mz_i,
+        yPrecursorMz = precursor_mz_j,
+        tolerance = tolerance,
+        ppm = ppm
+      )
+
+      if (!length(map[[1L]]) || !length(map[[2L]])) {
+        next
+      }
+
+      scores[i, j] <- gnps(spectrum_i[map[[1L]], ], spectrum_j[map[[2L]], ])
     }
   }
-  return(modified_cosine)
+
+  scores
 }

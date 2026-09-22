@@ -12,11 +12,16 @@ join_aligner(
   rt_weight = 1,
   id_col = "id",
   rt_col = "rt",
-  mz_col = "mz"
+  mz_col = "mz",
+  ims = FALSE,
+  ion_mobility_tolerance = 0.1,
+  ion_mobility_weight = 1,
+  ion_mobility_col = "ion_mobility"
 )
 }
 \arguments{
-\item{input}{A named list of data frames, each containing peak information with columns for id, rt, and mz.}
+\item{input}{A SummarizedExperiment object or list of SummarizedExperiment
+objects containing peak information in rowData columns for id, rt, and mz.}
 
 \item{mz_tolerance}{Numeric of length 2,
 the tolerance for m/z alignment window in absolute and relative (ppm) units.}
@@ -30,6 +35,12 @@ the weight for m/z in the alignment score calculation.}
 \item{rt_weight}{Numeric,
 the weight for retention time in the alignment score calculation.}
 
+\item{ims}{Logical, whether ion mobility should be included in the alignment.}
+
+\item{ion_mobility_tolerance}{Numeric, the tolerance for ion mobility alignment.}
+
+\item{ion_mobility_weight}{Numeric, the weight for ion mobility in the alignment score.}
+
 \item{id_col}{Character,
 the name of the column containing peak IDs.}
 
@@ -38,11 +49,13 @@ the name of the column containing retention times.}
 
 \item{mz_col}{Character,
 the name of the column containing m/z values.}
+
+\item{ion_mobility_col}{Character,
+the name of the column containing ion mobility values.}
 }
 \value{
-A data frame with aligned peaks across all samples.
-The data frame will have columns for id, rt, mz.
-The original id for each sample is stored in separate columns.
+A SummarizedExperiment object with aligned rowData, joined colData,
+and the assays shared by all input objects.
 }
 \description{
 This function aligns peaks across multiple samples based on m/z and retention time (rt) tolerances.

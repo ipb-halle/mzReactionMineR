@@ -18,4 +18,5 @@ get_col_data <- function(
   return(data)
 }
 
+#' @export
 get_colData <- function(...) get_col_data(...)

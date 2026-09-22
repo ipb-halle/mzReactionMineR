@@ -321,6 +321,7 @@ filter_se <- function(
 
 }
 
+#' @export
 filterSe <- function(...) filter_se(...)
 
 utils::globalVariables(c(".",".data","Value"))

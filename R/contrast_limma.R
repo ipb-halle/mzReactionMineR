@@ -183,6 +183,7 @@ contrast_limma <- function(object = NULL,
 
 }
 
+#' @export
 contrastLimma <- function(...) contrast_limma(...)
 
 utils::globalVariables(c(".data", "."))

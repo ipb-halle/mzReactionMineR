@@ -26,24 +26,48 @@ filter_spec <- function(sps,
                         remove_precursor = TRUE,
                         tolerance = 0.005,
                         ppm = 20) {
-  # copy input object
-  tmp <- sps
-  # generte list of filtered spectra
-  output_list <- lapply(1:length(tmp), function(i) {
-    # copy spectrum_i
-    spectrum <- tmp[i]
-    #
+  if (!methods::is(sps, "Spectra")) {
+    stop("sps must be a Spectra object.", call. = FALSE)
+  }
+  numeric_args <- list(
+    intensity_threshold = intensity_threshold,
+    intensity_threshold_pct = intensity_threshold_pct,
+    min_peaks = min_peaks,
+    max_peaks = max_peaks,
+    max_pct = max_pct,
+    tolerance = tolerance,
+    ppm = ppm
+  )
+  if (any(vapply(numeric_args, function(x) {
+    length(x) != 1L || !is.numeric(x) || is.na(x) || !is.finite(x)
+  }, logical(1)))) {
+    stop("numeric arguments must each be one finite numeric value.", call. = FALSE)
+  }
+  if (min_peaks < 0 || max_peaks < min_peaks ||
+      min_peaks != as.integer(min_peaks) || max_peaks != as.integer(max_peaks)) {
+    stop("min_peaks and max_peaks must be non-negative integers with max_peaks >= min_peaks.", call. = FALSE)
+  }
+  if (intensity_threshold < 0 || intensity_threshold_pct < 0 ||
+      intensity_threshold_pct > 100 || max_pct < 0 || max_pct > 1 ||
+      tolerance < 0 || ppm < 0) {
+    stop("thresholds, max_pct, tolerance, and ppm must be within their valid ranges.", call. = FALSE)
+  }
+  if (length(remove_precursor) != 1L || is.na(remove_precursor) ||
+      !is.logical(remove_precursor)) {
+    stop("remove_precursor must be a single logical value.", call. = FALSE)
+  }
+
+  filter_one <- function(spectrum) {
     if(remove_precursor) {
-      # remove precursor peak
       spectrum <- filterPrecursorPeaks(spectrum,
                                        tolerance = tolerance,
                                        ppm = ppm,
                                        mz = ">=")
-      #spectrum <- applyProcessing(spectrum)
     }
-    # get intensities vector
-    intensities <- unlist(intensity(spectrum))
-    # filter for intensity
+    intensities <- unlist(intensity(spectrum), use.names = FALSE)
+    if (!length(intensities)) {
+      return(NULL)
+    }
     min_intensity <- max(
       intensity_threshold_pct/100 * max(intensities),
       intensity_threshold
@@ -52,38 +76,30 @@ filter_spec <- function(sps,
       spectrum,
       intensity = c(min_intensity,Inf)
     )
-    # get number of peak in spectrum
-    n_peaks <- length(unlist(mz(spectrum)))
-    # remove if n_peaks < min_peaks
-    if(n_peaks < min_peaks){
+    n_peaks <- length(unlist(mz(spectrum), use.names = FALSE))
+    if (n_peaks < min_peaks) {
       return(NULL)
     }
-    #
-    if(n_peaks > max_peaks) {
-      # get intensities vector
-      intensities <- unlist(intensity(spectrum))
-      # Get the indices of the most intense peaks
+    if (n_peaks > max_peaks) {
+      intensities <- unlist(intensity(spectrum), use.names = FALSE)
       idx <- order(intensities, decreasing = TRUE)[1:max_peaks]
-      # get peaks to keep based on max_pct
-      idx_new <- idx[
-        1:which.max(
-          cumsum(intensities[idx]/sum(intensities[idx])) > max_pct
-        )
-      ]
-      # Subset the peaksData to keep only those rows
+      cumulative_pct <- cumsum(intensities[idx] / sum(intensities[idx]))
+      keep <- which(cumulative_pct >= max_pct)[1L]
+      idx_new <- idx[seq_len(ifelse(is.na(keep), max_peaks, keep))]
       spectrum <- filterMzValues(
         spectrum,
-        mz = unlist(mz(spectrum))[idx_new],
+        mz = unlist(mz(spectrum), use.names = FALSE)[idx_new],
         ppm = 0
       )
     }
-    # return results
-    return(applyProcessing(spectrum))
-  })
-  # remove empty entries
-  output_list <- Filter(Negate(is.null), output_list)
-  # combine list into single spectrum object
-  output <- do.call(c, output_list)
-  # return
-  return(output)
+    applyProcessing(spectrum)
+  }
+
+  filtered <- Filter(Negate(is.null), lapply(seq_along(sps), function(i) {
+    filter_one(sps[i])
+  }))
+  if (!length(filtered)) {
+    return(sps[integer(0)])
+  }
+  do.call(c, filtered)
 }

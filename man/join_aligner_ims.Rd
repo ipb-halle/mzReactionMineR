@@ -2,7 +2,7 @@
 % Please edit documentation in R/join_aligner_ims.R
 \name{join_aligner_ims}
 \alias{join_aligner_ims}
-\title{Align peaks across multiple samples}
+  itle{Align peaks across multiple samples using ion mobility.}
 \usage{
 join_aligner_ims(
   input,
@@ -19,7 +19,9 @@ join_aligner_ims(
 )
 }
 \arguments{
-\item{input}{A named list of data frames, each containing peak information with columns for id, rt, and mz.}
+\item{input}{A SummarizedExperiment object or list of SummarizedExperiment
+objects containing peak information in rowData columns for id, rt, mz,
+and ion mobility.}
 
 \item{mz_tolerance}{Numeric vector of length 2,
 the tolerance for m/z alignment window (absolute, relative).}
@@ -49,15 +51,13 @@ the name of the column containing retention times.}
 the name of the column containing m/z values.}
 
 \item{ion_mobility_col}{Character,
-the name of the column containing m/z values.}
+the name of the column containing ion mobility values.}
 }
 \value{
-A data frame with aligned peaks across all samples.
-The data frame will have columns for id, rt, mz, ion_mobility.
-The original id for each sample is stored in separate columns.
+A SummarizedExperiment object with aligned rowData, joined colData,
+and the assays shared by all input objects.
 }
 \description{
-This function aligns peaks across multiple samples based on m/z and retention time (rt) tolerances.
-It is a simplified implementation of mzMine's Join Aligner algorithm.
-mzmine.github.io/mzmine_documentation/module_docs/align_join_aligner/join_aligner.html
+This is a convenience wrapper around \code{\link[=join_aligner]{join_aligner()}} with ion mobility
+alignment enabled.
 }

@@ -268,6 +268,7 @@ louvain_clustering_features <- function(
 
 }
 
+#' @export
 louvainClusteringFeatures <- function(...) louvain_clustering_features(...)
 
 

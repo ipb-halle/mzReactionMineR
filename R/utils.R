@@ -4,6 +4,31 @@ object_argument_name <- function(object_expression) {
   paste(deparse(object_expression), collapse = "")
 }
 
+se_to_samples <- function(object, source_id, required) {
+  row_data <- as.data.frame(SummarizedExperiment::rowData(object))
+  missing <- setdiff(required, names(row_data))
+  if (length(missing)) {
+    stop(sprintf("SummarizedExperiment rowData is missing column(s): %s", paste(missing, collapse = ", ")))
+  }
+
+  sample_names <- colnames(object)
+  if (is.null(sample_names)) {
+    sample_names <- paste("Sample", seq_len(ncol(object)), sep = "_")
+  }
+  if (anyNA(sample_names) || any(!nzchar(sample_names))) {
+    stop("SummarizedExperiment columns must be named")
+  }
+
+  samples <- lapply(seq_len(ncol(object)), function(sample_id) {
+    sample <- row_data[, required, drop = FALSE]
+    sample$.source <- source_id
+    sample$.row <- seq_len(nrow(row_data))
+    sample
+  })
+  names(samples) <- sample_names
+  samples
+}
+
 
 # function to find the closest id of a given rt/mz pair ------------------------
 

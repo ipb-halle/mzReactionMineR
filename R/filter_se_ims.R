@@ -91,6 +91,7 @@ filter_se_ims <- function(
 
 }
 
+#' @export
 filterSe_ims <- function(...) filter_se_ims(...)
 
 utils::globalVariables(c(".",".data","Value"))

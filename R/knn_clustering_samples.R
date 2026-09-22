@@ -140,4 +140,5 @@ knn_clustering_samples <- function(
 
 }
 
+#' @export
 knnClusteringSamples <- function(...) knn_clustering_samples(...)

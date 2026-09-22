@@ -155,4 +155,5 @@ anova_limma <- function(object = NULL,
   return(anova_res[, c(return_colums, "F", "P.Value", "adj.P.Val"), drop = FALSE])
 }
 
+#' @export
 anovaLimma <- function(...) anova_limma(...)

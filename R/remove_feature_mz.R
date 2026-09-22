@@ -68,4 +68,5 @@ remove_feature_mz <- function(
 
 }
 
+#' @export
 removeFeatureMz <- function(...) remove_feature_mz(...)

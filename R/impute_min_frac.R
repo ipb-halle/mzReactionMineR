@@ -52,4 +52,5 @@ impute_min_frac <- function(
   object
 }
 
+#' @export
 imputeMinFrac <- function(...) impute_min_frac(...)

@@ -46,6 +46,7 @@ mzmine_alignment_qc <- function(
 
 }
 
+#' @export
 mzmine_alignment_QC <- function(...) mzmine_alignment_qc(...)
 
 

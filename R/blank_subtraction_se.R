@@ -137,6 +137,7 @@ blank_subtraction_se <- function(
   return(result)
 }
 
+#' @export
 blankSubtractionSE <- function(...) blank_subtraction_se(...)
 
  utils::globalVariables(c(".",".data","Value"))
