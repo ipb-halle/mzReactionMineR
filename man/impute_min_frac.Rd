@@ -2,7 +2,7 @@
 % Please edit documentation in R/impute_min_frac.R
 \name{impute_min_frac}
 \alias{impute_min_frac}
-\title{imputeMinFrac}
+\title{impute_min_frac}
 \usage{
 impute_min_frac(object, assay, fraction = 5, new_assay_name = "imputed")
 }

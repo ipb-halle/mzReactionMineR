@@ -2,7 +2,7 @@
 % Please edit documentation in R/contrast_limma.R
 \name{contrast_limma}
 \alias{contrast_limma}
-\title{contrastLimma}
+\title{contrast_limma}
 \usage{
 contrast_limma(
   object = NULL,

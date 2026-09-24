@@ -1,7 +1,7 @@
-#' knnClusteringSamples
+#' louvain_clustering_features
 #'
 #' A function that performs clustering (community detection) on features in a
-#' SummarizedExperiment object based on correlation.
+#' SummarizedExperiment object based on correlation across samples.
 #'
 #' @importFrom SummarizedExperiment rowData assays
 #' @importFrom MatrixGenerics rowVars rowMaxs
@@ -35,7 +35,7 @@
 #' @param id_col Character. The name of the column in rowData(object) that
 #'        contains the feature ids. Default is "id".
 #'
-#' @returns a data.frame with two columns: "sample" and "cluster".
+#' @returns a data.frame with feature ids, cluster labels, and within-cluster connectivity.
 #' @export
 #'
 louvain_clustering_features <- function(
@@ -57,219 +57,170 @@ louvain_clustering_features <- function(
     id_col = "id"
 ) {
 
-  # select ids based on rowwise variance
-
-  print(paste0("Select top, ", n_top, " features based on ", filter_type))
-
-  if(filter_type == "intensity") {
-    top_ids <- get_row_data(object)[
-      order(rowMaxs(assays(object)[[assay]]), decreasing = TRUE)[1:n_top],
-    ][[id_col]]
-
-  } else if(filter_type == "variance") {
-
-    top_ids <- get_row_data(object)[
-      order(rowVars(assays(object)[[assay]]), decreasing = TRUE)[1:n_top],
-    ][[id_col]]
-
-  } else {
-
-    stop("Invalid value for 'filter_type'. Must be either 'intensity' or 'variance'.")
-
+  # Validate the object, selected columns, and scalar controls.
+  if (!inherits(object, "SummarizedExperiment")) {
+    stop("'object' must be a SummarizedExperiment.", call. = FALSE)
+  }
+  if (length(assay) != 1L || !is.character(assay) ||
+      !assay %in% names(assays(object))) {
+    stop("'assay' must name an assay in 'object'.", call. = FALSE)
+  }
+  if (length(id_col) != 1L || !is.character(id_col) ||
+      !id_col %in% names(rowData(object))) {
+    stop("'id_col' must name a column in rowData(object).", call. = FALSE)
+  }
+  if (anyNA(rowData(object)[[id_col]]) || anyDuplicated(rowData(object)[[id_col]])) {
+    stop("'id_col' must contain unique, non-missing feature identifiers.", call. = FALSE)
+  }
+  if (length(filter_type) != 1L || !filter_type %in% c("intensity", "variance")) {
+    stop("'filter_type' must be either 'intensity' or 'variance'.", call. = FALSE)
+  }
+  if (length(n_top) != 1L || !is.numeric(n_top) || n_top < 1 ||
+      n_top != as.integer(n_top) || n_top > nrow(object)) {
+    stop("'n_top' must be an integer between 1 and the number of features.", call. = FALSE)
+  }
+  if (!is.logical(return_removed) || length(return_removed) != 1L || is.na(return_removed) ||
+      !is.logical(calc_PCA) || length(calc_PCA) != 1L || is.na(calc_PCA) ||
+      !is.logical(scale) || length(scale) != 1L || is.na(scale)) {
+    stop("'return_removed', 'calc_PCA', and 'scale' must each be TRUE or FALSE.", call. = FALSE)
+  }
+  if (length(R_trsh) != 1L || !is.numeric(R_trsh) || !is.finite(R_trsh) ||
+      R_trsh < -1 || R_trsh > 1) {
+    stop("'R_trsh' must be one finite number between -1 and 1.", call. = FALSE)
+  }
+  if (length(resolution) != 1L || !is.numeric(resolution) ||
+      !is.finite(resolution) || resolution <= 0) {
+    stop("'resolution' must be one positive finite number.", call. = FALSE)
+  }
+  if (length(min_degree) != 1L || !is.numeric(min_degree) || min_degree < 0 ||
+      min_degree != as.integer(min_degree)) {
+    stop("'min_degree' must be a non-negative integer.", call. = FALSE)
+  }
+  if (length(min_cluster_size) != 1L || !is.numeric(min_cluster_size) ||
+      min_cluster_size < 1 || min_cluster_size != as.integer(min_cluster_size)) {
+    stop("'min_cluster_size' must be a positive integer.", call. = FALSE)
+  }
+  if (length(metric) != 1L || !metric %in% c("pearson", "kendall", "spearman")) {
+    stop("'metric' must be either 'pearson', 'kendall', or 'spearman'.", call. = FALSE)
+  }
+  if (length(type) != 1L || !type %in% c("pos", "neg", "both")) {
+    stop("'type' must be either 'pos', 'neg', or 'both'.", call. = FALSE)
+  }
+  if (length(min_PC) != 1L || !is.numeric(min_PC) || min_PC < 1 ||
+      min_PC != as.integer(min_PC)) {
+    stop("'min_PC' must be a positive integer.", call. = FALSE)
+  }
+  if (length(PC_var) != 1L || !is.numeric(PC_var) || !is.finite(PC_var) ||
+      PC_var <= 0 || PC_var > 1) {
+    stop("'PC_var' must be greater than 0 and at most 1.", call. = FALSE)
   }
 
+  # Select the highest-intensity or highest-variance features.
+  feature_data <- assays(object)[[assay]]
+  feature_score <- switch(
+    filter_type,
+    intensity = rowMaxs(feature_data),
+    variance = rowVars(feature_data)
+  )
+  selected_rows <- order(feature_score, decreasing = TRUE)[seq_len(n_top)]
+  feature_ids <- rowData(object)[[id_col]][selected_rows]
 
-  input_data <- assays(object[rowData(object)[[id_col]] %in% top_ids, ])[[assay]]
-
-  if(scale) {
-
-    print("Scaling data.")
-
-    input_data <- (scale(t(input_data)))
-
-  } else {
-
-    input_data <- t(input_data)
-
+  # Keep the same subset-based preparation pattern used by knn_clustering_samples
+  # so row ordering and filtering semantics stay comparable to the last working implementation.
+  input_data <- assays(object[rowData(object)[[id_col]] %in% feature_ids, ])[[assay]]
+  if (any(!is.finite(input_data))) {
+    stop("Selected assay values must be finite.", call. = FALSE)
   }
 
-  if(calc_PCA) {
-
-    print("Calculating PCA.")
-
+  # Arrange samples as rows, optionally scale, and optionally reduce dimensions.
+  input_data <- t(input_data)
+  if (scale) input_data <- scale(input_data)
+  if (any(!is.finite(input_data))) {
+    stop("Selected assay values must remain finite after scaling.", call. = FALSE)
+  }
+  if (calc_PCA) {
     pca_res <- prcomp(input_data)
-
-    var_explained <- cumsum((pca_res$sdev^2) / sum(pca_res$sdev^2))
-
-    num_PCs <- max(
-      which.max(var_explained > PC_var),
-      min_PC
-    )
-
-    print(paste0(
-      "Retaining ", num_PCs, " PCs, explaining ",
-      round(var_explained[num_PCs] * 100, 2), "% of the total variance."
-    ))
-
-    input_data <- pca_res$x[, 1:num_PCs]
-
+    var_explained <- cumsum(pca_res$sdev^2) / sum(pca_res$sdev^2)
+    target_pc <- which(var_explained >= PC_var)[1L]
+    num_pcs <- max(min_PC, target_pc)
+    if (num_pcs > ncol(pca_res$x)) {
+      stop("'min_PC' cannot exceed the number of available principal components.", call. = FALSE)
+    }
+    input_data <- pca_res$x[, seq_len(num_pcs), drop = FALSE]
   }
 
-  # generate graph -------------------------------------------------------------
-
-  # calculate correlation matrix
-
-  print("Calculating correlation matrix.")
-
-  if(!metric %in% c("pearson", "kendall", "spearman")) {
-
-    stop("Invalid value for 'metric'.
-         Must be either 'pearson', 'kendall' or 'spearman'.")
-
-  } else {
-
-    cor_mat <- cor(input_data, method = metric)
-
-  }
-
-  # generate adjacency matrix
-
+  # Calculate the feature-to-feature correlation matrix and adjacency matrix.
+  cor_mat <- cor(input_data, method = metric)
   adj_mat <- switch(
     type,
     pos = (cor_mat > R_trsh) * 1,
     neg = (cor_mat < R_trsh) * 1,
     both = (abs(cor_mat) > R_trsh) * 1
   )
-
-  rm(cor_mat)
-
-  print(paste0("Generating graph."))
-
-  G <- graph_from_adjacency_matrix(adj_mat, mode = "undirected")
-  vertex_attr(G)$name <- rowData(object)[[id_col]]
-
-  rm(adj_mat)
-
-  # graph clean-up -------------------------------------------------------------
-
-  # low degree
-
-  features_to_remove <- V(G)[degree(G) < min_degree]$name
-
-  if( length(features_to_remove) == length(V(G))) {
-
-    stop(paste0(
-      "All features have degree < ", min_degree, ". Try lowering the threshold."
-    ))
-
+  diag(adj_mat) <- 0
+  if (any(!is.finite(adj_mat))) {
+    stop("The correlation matrix contains non-finite values.", call. = FALSE)
   }
 
-  G_clean <- delete_vertices(G, features_to_remove)
-
-  print(paste0(
-    "Removed ", length(features_to_remove), " features with degree < ", min_degree)
-  )
-
-  # clustering -----------------------------------------------------------------
-
-  print(paste0("Execute clustering using Louvain algorithm with resolution ", resolution, "."))
-
-  communities <- cluster_louvain(G_clean, resolution = resolution)
-  #
+  # Build the graph and remove features with insufficient connectivity.
+  graph <- graph_from_adjacency_matrix(adj_mat, mode = "undirected")
+  vertex_attr(graph)$name <- feature_ids
+  features_to_remove <- V(graph)[degree(graph) < min_degree]$name
+  if (length(features_to_remove) == length(V(graph))) {
+    stop(paste0("All features have degree < ", min_degree, ". Try lowering the threshold."), call. = FALSE)
+  }
+  graph_clean <- delete_vertices(graph, features_to_remove)
+  communities <- cluster_louvain(graph_clean, resolution = resolution)
   clusters <- data.frame(
-    V(G_clean)$name,
-    as.character(membership(communities))
+    feature_id = V(graph_clean)$name,
+    cluster = as.character(membership(communities)),
+    stringsAsFactors = FALSE
   )
-  colnames(clusters) <- c(id_col, "cluster")
+  names(clusters)[1L] <- id_col
 
-  # remove small clusters ------------------------------------------------------
-
+  # Remove small communities and renumber the remaining communities by size.
   clusters_to_remove <- clusters %>%
     group_by(cluster) %>%
-    summarize(n = n()) %>%
-    filter(
-      n < min_cluster_size
-    )
-
-  if( nrow(clusters_to_remove) == length(unique(clusters$cluster)) ) {
-
-    stop(paste0(
-      "No clusters survive threshold of ", min_cluster_size, " features. Try lowering the threshold."
-    ))
-
+    summarize(n = n(), .groups = "drop") %>%
+    filter(n < min_cluster_size) %>%
+    pull(cluster)
+  if (length(clusters_to_remove) == length(unique(clusters$cluster))) {
+    stop(paste0("No clusters survive threshold of ", min_cluster_size,
+                " features. Try lowering the threshold."), call. = FALSE)
   }
-
-  print(paste0(
-    "Removed ", length(clusters_to_remove$cluster), " cluster with < ",
-    min_cluster_size, " features, totalling ", sum(clusters_to_remove$n),
-    " features."
-  ))
-
   clusters_clean <- clusters %>%
-    filter(!cluster %in% clusters_to_remove$cluster)
-
-  # rename clusters
-
-  clusters_clean <- clusters_clean %>%
-    group_by(cluster) %>%
-    summarize(n = n()) %>%
-    ungroup() %>%
-    arrange(desc(n)) %>%
-    mutate(
-      cluster_new = 1:nrow(.)
+    filter(!cluster %in% clusters_to_remove) %>%
+    left_join(
+      clusters %>%
+        group_by(cluster) %>%
+        summarize(cluster_size = n(), .groups = "drop") %>%
+        arrange(desc(cluster_size), cluster) %>%
+        mutate(cluster_new = row_number()),
+      by = "cluster"
     ) %>%
-    right_join(clusters_clean) %>%
-    select(all_of(id_col), cluster_new) %>%
-    dplyr::rename("cluster" = cluster_new)
+    mutate(cluster = cluster_new) %>%
+    select(all_of(id_col), cluster)
 
-  # calculate degree within community ------------------------------------------
-
-  cluster_connectivity <- list()
-
-  for(i in unique(clusters_clean$cluster)) {
-
-    vertices_to_keep <- clusters_clean[clusters_clean$cluster == i,][[id_col]]
-
-    connectivity <- degree(subgraph(G_clean, vertices_to_keep))
-
-    cluster_connectivity[[i]] <- data.frame(
-      names(connectivity),
-      i,
-      connectivity
-    )
-    names(cluster_connectivity[[i]]) <- c(id_col, "cluster", "cluster_connectivity")
-  }
-
-  clusters_clean <- bind_rows(cluster_connectivity)
-  row.names(clusters_clean) <- NULL
-
-  if(return_removed) {
-
-    print("Adding removed features to output as cluster '-1'")
-
+  # Calculate within-community degree and optionally append removed features.
+  clusters_clean$cluster_connectivity <- vapply(seq_len(nrow(clusters_clean)), function(i) {
+    vertices <- clusters_clean[[id_col]][clusters_clean$cluster == clusters_clean$cluster[i]]
+    degree(subgraph(graph_clean, vertices))[clusters_clean[[id_col]][i]]
+  }, numeric(1))
+  if (return_removed) {
     removed_features <- data.frame(
-      c(
-        features_to_remove,
-        clusters[clusters$cluster %in% clusters_to_remove$cluster,id_col]
-      ),
-      -1,
-      NA
+      feature_id = c(features_to_remove, clusters[clusters$cluster %in% clusters_to_remove, id_col]),
+      cluster = -1,
+      cluster_connectivity = NA_real_,
+      stringsAsFactors = FALSE
     )
-    names(removed_features) <- c(id_col, "cluster", "cluster_connectivity")
-
-    clusters_clean <- rbind(
-      clusters_clean,
-      removed_features
-    )
-
+    names(removed_features)[1L] <- id_col
+    clusters_clean <- rbind(clusters_clean, removed_features)
   }
-
-  return(clusters_clean)
+  row.names(clusters_clean) <- NULL
+  clusters_clean
 
 }
 
-#' @export
-louvainClusteringFeatures <- function(...) louvain_clustering_features(...)
 
 
-utils::globalVariables(c("cluster", "desc", "cluster_new"))
+utils::globalVariables(c("cluster", "desc", "cluster_new", "cluster_size"))

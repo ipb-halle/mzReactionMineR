@@ -2,7 +2,7 @@
 % Please edit documentation in R/filter_se_ims.R
 \name{filter_se_ims}
 \alias{filter_se_ims}
-\title{filterSE}
+\title{filter_se_ims}
 \usage{
 filter_se_ims(
   object = NULL,

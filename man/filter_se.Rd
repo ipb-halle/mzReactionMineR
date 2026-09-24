@@ -2,7 +2,7 @@
 % Please edit documentation in R/filter_se.R
 \name{filter_se}
 \alias{filter_se}
-\title{filterSE}
+\title{filter_se}
 \usage{
 filter_se(
   object = NULL,

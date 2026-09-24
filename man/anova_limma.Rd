@@ -2,7 +2,7 @@
 % Please edit documentation in R/anova_limma.R
 \name{anova_limma}
 \alias{anova_limma}
-\title{anovaLimma}
+\title{anova_limma}
 \usage{
 anova_limma(
   object = NULL,

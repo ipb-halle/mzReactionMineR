@@ -10,10 +10,10 @@ make_normalize_pqn_object <- function() {
   )
 }
 
-test_that("normalizePQN returns a normalized assay", {
+test_that("normalize_pqn returns a normalized assay", {
   object <- make_normalize_pqn_object()
 
-  result <- normalizePQN(object, assay = "raw")
+  result <- normalize_pqn(object, assay = "raw")
 
   expect_s4_class(result, "SummarizedExperiment")
   expect_true("pqn_normalized" %in% names(SummarizedExperiment::assays(result)))
@@ -27,7 +27,7 @@ test_that("normalizePQN returns a normalized assay", {
   )
 })
 
-test_that("normalizePQN calculates references from named samples", {
+test_that("normalize_pqn calculates references from named samples", {
   object <- make_normalize_pqn_object()
   expected <- matrix(
     c(1, 2, 1, 2),
@@ -37,15 +37,15 @@ test_that("normalizePQN calculates references from named samples", {
 
   expect_identical(
     SummarizedExperiment::assay(
-      normalizePQN(object, "raw", reference_samples = "sample1"),
+      normalize_pqn(object, "raw", reference_samples = "sample1"),
       "pqn_normalized"
     ),
     expected
   )
 })
 
-test_that("normalizePQN supports custom assay names and mean references", {
-  result <- normalizePQN(
+test_that("normalize_pqn supports custom assay names and mean references", {
+  result <- normalize_pqn(
     make_normalize_pqn_object(),
     assay = "raw",
     type = "mean",
@@ -55,42 +55,42 @@ test_that("normalizePQN supports custom assay names and mean references", {
   expect_true("normalized" %in% names(SummarizedExperiment::assays(result)))
 })
 
-test_that("normalizePQN reports invalid object and assay inputs", {
+test_that("normalize_pqn reports invalid object and assay inputs", {
   object <- make_normalize_pqn_object()
   input_object <- matrix(1:4, nrow = 2)
 
-  expect_error(normalizePQN(input_object), "input_object.*SummarizedExperiment")
-  expect_error(normalizePQN(object, assay = "missing"), "assay.*object")
+  expect_error(normalize_pqn(input_object), "input_object.*SummarizedExperiment")
+  expect_error(normalize_pqn(object, assay = "missing"), "assay.*object")
 })
 
-test_that("normalizePQN reports invalid reference sample selections", {
+test_that("normalize_pqn reports invalid reference sample selections", {
   object <- make_normalize_pqn_object()
   unnamed_object <- SummarizedExperiment::SummarizedExperiment(
     assays = list(raw = unname(SummarizedExperiment::assay(object, "raw")))
   )
 
   expect_error(
-    normalizePQN(object, "raw", reference_samples = 1),
+    normalize_pqn(object, "raw", reference_samples = 1),
     "sample names"
   )
   expect_error(
-    normalizePQN(object, "raw", reference_samples = c(TRUE, FALSE)),
+    normalize_pqn(object, "raw", reference_samples = c(TRUE, FALSE)),
     "sample names"
   )
   expect_error(
-    normalizePQN(object, "raw", reference_samples = character()),
+    normalize_pqn(object, "raw", reference_samples = character()),
     "unique"
   )
   expect_error(
-    normalizePQN(object, "raw", reference_samples = c("sample1", "sample1")),
+    normalize_pqn(object, "raw", reference_samples = c("sample1", "sample1")),
     "unique"
   )
   expect_error(
-    normalizePQN(object, "raw", reference_samples = "missing"),
+    normalize_pqn(object, "raw", reference_samples = "missing"),
     "present in the assay"
   )
   expect_error(
-    normalizePQN(unnamed_object, "raw", reference_samples = "sample1"),
+    normalize_pqn(unnamed_object, "raw", reference_samples = "sample1"),
     "column names"
   )
 })

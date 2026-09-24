@@ -2,7 +2,7 @@
 % Please edit documentation in R/blank_subtraction_se.R
 \name{blank_subtraction_se}
 \alias{blank_subtraction_se}
-\title{blankSubtractionSE}
+\title{blank_subtraction_se}
 \usage{
 blank_subtraction_se(
   object = NULL,

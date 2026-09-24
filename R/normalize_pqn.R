@@ -116,5 +116,3 @@ normalize_pqn <- function(
 
 }
 
-#' @export
-normalizePQN <- function(...) normalize_pqn(...)

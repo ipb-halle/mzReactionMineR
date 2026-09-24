@@ -23,11 +23,12 @@ Imports:
     stats,
     Spectra,
     MsCoreUtils,
-	igraph
+	  igraph
 Additional_repositories: 
     https://bioconductor.org/packages/3.21/bioc
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    S4Vectors
 Config/testthat/edition: 3
 RemoteType: local
 RemotePkgRef: local::../../packages/mzReactionMineR/

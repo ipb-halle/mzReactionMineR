@@ -2,7 +2,7 @@
 % Please edit documentation in R/join_aligner_ims.R
 \name{join_aligner_ims}
 \alias{join_aligner_ims}
-  itle{Align peaks across multiple samples using ion mobility.}
+\title{Align peaks across multiple samples using ion mobility.}
 \usage{
 join_aligner_ims(
   input,

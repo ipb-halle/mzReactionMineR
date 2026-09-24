@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_row_data.R
 \name{get_row_data}
 \alias{get_row_data}
-\title{get_rowData}
+\title{get_row_data}
 \usage{
 get_row_data(object = NULL)
 }

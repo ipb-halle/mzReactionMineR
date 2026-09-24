@@ -2,7 +2,7 @@
 % Please edit documentation in R/remove_feature_mz.R
 \name{remove_feature_mz}
 \alias{remove_feature_mz}
-\title{removeFeatureMz}
+\title{remove_feature_mz}
 \usage{
 remove_feature_mz(
   object,

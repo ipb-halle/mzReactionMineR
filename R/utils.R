@@ -153,7 +153,7 @@ get_intensities_id <- function(
 
 }
 
-# Resolve and validate the internal standard used by normalizeIS and plotIS.
+# Resolve and validate the internal standard used by normalize_is and plot_is.
 resolve_is_id <- function(
     object,
     id,
@@ -349,9 +349,6 @@ make_knn_graph <- function(distance_mat, k) {
     knn_graph[i, order(distance_mat[i, ], decreasing = FALSE)[2:(k+1)]] <- 1
 
   }
-
-  # make symmetric
-  knn_graph <- pmax(knn_graph, t(knn_graph))
 
   # make igraph object from adjacency matrix
   knn_graph <- graph_from_adjacency_matrix(knn_graph, mode = "undirected" )

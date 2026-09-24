@@ -21,8 +21,8 @@ make_normalize_is_object <- function() {
   )
 }
 
-test_that("normalizeIS normalizes by an internal-standard id", {
-  result <- normalizeIS(
+test_that("normalize_is normalizes by an internal-standard id", {
+  result <- normalize_is(
     object = make_normalize_is_object(),
     assay = "raw",
     id = "feature2",
@@ -44,8 +44,8 @@ test_that("normalizeIS normalizes by an internal-standard id", {
   )
 })
 
-test_that("normalizeIS resolves an internal standard by coordinates", {
-  result <- normalizeIS(
+test_that("normalize_is resolves an internal standard by coordinates", {
+  result <- normalize_is(
     object = make_normalize_is_object(),
     assay = "raw",
     rt = 2,
@@ -61,26 +61,26 @@ test_that("internal-standard functions report invalid inputs", {
   object <- make_normalize_is_object()
 
   expect_error(
-    normalizeIS(object, assay = "missing", id = "feature2"),
+    normalize_is(object, assay = "missing", id = "feature2"),
     "assay.*name.*assay"
   )
   expect_error(
-    normalizeIS(object, assay = "raw", id = "missing"),
+    normalize_is(object, assay = "raw", id = "missing"),
     "id.*not found"
   )
   expect_error(
-    normalizeIS(object, assay = "raw", rt = 20, mz = 200),
+    normalize_is(object, assay = "raw", rt = 20, mz = 200),
     "No feature matching"
   )
   expect_error(
-    normalizeIS(object, assay = "raw", id = "feature2", mz_tolerance = -1),
+    normalize_is(object, assay = "raw", id = "feature2", mz_tolerance = -1),
     "mz_tolerance.*non-negative"
   )
 
   invalid_intensities <- object
   SummarizedExperiment::assay(invalid_intensities, "raw")[2, 1] <- 0
   expect_error(
-    normalizeIS(invalid_intensities, assay = "raw", id = "feature2"),
+    normalize_is(invalid_intensities, assay = "raw", id = "feature2"),
     "positive and finite"
   )
 })

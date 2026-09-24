@@ -1,4 +1,4 @@
-#' get_rowData
+#' get_row_data
 #'
 #' Convenience function that extracts the rowData from a SummarizedExperiment
 #'     object as a data.frame
@@ -18,5 +18,3 @@ get_row_data <- function(
   return(data)
 }
 
-#' @export
-get_rowData <- function(...) get_row_data(...)

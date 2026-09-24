@@ -72,7 +72,5 @@ plot_is <- function(
 
 }
 
-#' @export
-plotIS <- function(...) plot_is(...)
 
 utils::globalVariables(c("x", "y"))

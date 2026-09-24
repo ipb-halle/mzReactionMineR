@@ -1,4 +1,4 @@
-#' get_colData
+#' get_col_data
 #'
 #' Convenience function that extracts the colData from a SummarizedExperiment
 #'     object as a data.frame
@@ -18,5 +18,3 @@ get_col_data <- function(
   return(data)
 }
 
-#' @export
-get_colData <- function(...) get_col_data(...)

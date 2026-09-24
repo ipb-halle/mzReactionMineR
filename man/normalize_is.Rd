@@ -2,7 +2,7 @@
 % Please edit documentation in R/normalize_is.R
 \name{normalize_is}
 \alias{normalize_is}
-\title{normalizeIS}
+\title{normalize_is}
 \usage{
 normalize_is(
   object,

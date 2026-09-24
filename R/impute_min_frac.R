@@ -1,4 +1,4 @@
-#' imputeMinFrac
+#' impute_min_frac
 #'
 #' Function to impute missing values in a SummarizedExperiment assay with a
 #' fraction of the minimum value for each row.
@@ -52,5 +52,3 @@ impute_min_frac <- function(
   object
 }
 
-#' @export
-imputeMinFrac <- function(...) impute_min_frac(...)

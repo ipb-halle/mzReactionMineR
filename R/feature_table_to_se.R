@@ -5,6 +5,7 @@
 #'
 #' @importFrom utils read.csv
 #' @importFrom SummarizedExperiment SummarizedExperiment
+#' @importFrom stats setNames
 #' @param path_to_file Character. Path to the feature table CSV file.
 #' @param sample_meta_data Data frame containing sample metadata.
 #' @param assay_name Character. Name of the assay to create. Defaults to

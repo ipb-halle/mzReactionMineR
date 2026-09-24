@@ -1,4 +1,4 @@
-#' QC_plots
+#' qc_plots
 #'
 #' This function generates quality control plots from mzMine feature tables.
 #' Inspired by xcms::plotQC.R
@@ -270,8 +270,6 @@ qc_plots <- function(
 
 }
 
-#' @export
-QC_plots <- function(...) qc_plots(...)
 
 utils::globalVariables(c(".data", ".", "..density..", "density", "filename",
                          "value"))

@@ -7,6 +7,7 @@
 #' @importFrom dplyr distinct left_join
 #' @importFrom utils read.delim
 #' @importFrom methods as is
+#' @importFrom stats setNames
 #'
 #' @param object a SummarizedExperiment object
 #' @param path_to_sirius path to the SIRIUS output file that should be joined
@@ -72,3 +73,5 @@ join_se_sirius <- function(
   rowData(object) <- row_data
   object
 }
+
+utils::globalVariables(c("mappingFeatureId"))

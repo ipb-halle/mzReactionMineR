@@ -17,10 +17,10 @@ make_impute_object <- function() {
   )
 }
 
-test_that("imputeMinFrac imputes missing values using row minima", {
+test_that("impute_min_frac imputes missing values using row minima", {
   object <- make_impute_object()
 
-  result <- imputeMinFrac(
+  result <- impute_min_frac(
     object = object,
     assay = "raw",
     fraction = 5,
@@ -48,7 +48,7 @@ test_that("imputeMinFrac imputes missing values using row minima", {
   )
 })
 
-test_that("imputeMinFrac errors when a row is entirely missing", {
+test_that("impute_min_frac errors when a row is entirely missing", {
   object <- SummarizedExperiment::SummarizedExperiment(
     assays = list(
       raw = matrix(
@@ -60,20 +60,20 @@ test_that("imputeMinFrac errors when a row is entirely missing", {
   )
 
   expect_error(
-    imputeMinFrac(object = object, assay = "raw"),
+    impute_min_frac(object = object, assay = "raw"),
     "only NA values"
   )
 })
 
-test_that("imputeMinFrac reports the supplied object name", {
+test_that("impute_min_frac reports the supplied object name", {
   input_se <- make_impute_object()
 
   expect_error(
-    imputeMinFrac(input_se, assay = "missing"),
+    impute_min_frac(input_se, assay = "missing"),
     "missing.*`input_se`"
   )
   expect_warning(
-    imputeMinFrac(input_se, assay = "raw", new_assay_name = "raw"),
+    impute_min_frac(input_se, assay = "raw", new_assay_name = "raw"),
     "already exists in `input_se`"
   )
 })

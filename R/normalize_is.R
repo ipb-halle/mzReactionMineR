@@ -1,4 +1,4 @@
-#' normalizeIS
+#' normalize_is
 #'
 #' A function to normalize the intensities of an assay in a SummarizedExperiment
 #'  object based on the intensities of an internal standard. The internal
@@ -87,7 +87,5 @@ normalize_is <- function(
 
 }
 
-#' @export
-normalizeIS <- function(...) normalize_is(...)
 
 utils::globalVariables(c(".data", ".", "mz_diff", "rt_diff"))

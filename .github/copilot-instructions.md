@@ -33,7 +33,7 @@ Contains mainly helper functions and wrappers that facilitate the manipulation, 
 
 ## Coding guidelines
 - Always write clear and concise code that is easy to understand and maintain.
-- Follow consistent naming conventions for variables, functions, and files.
+- Follow consistent naming conventions for variables, functions, and files across the repository.
 - Document all functions with meaningful comments and usage examples.
 - Avoid code duplication by reusing existing functions and utilities.
 - Write unit tests for all new functionality to ensure correctness and reliability.

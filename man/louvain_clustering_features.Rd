@@ -2,7 +2,7 @@
 % Please edit documentation in R/louvain_clustering_features.R
 \name{louvain_clustering_features}
 \alias{louvain_clustering_features}
-\title{knnClusteringSamples}
+\title{louvain_clustering_features}
 \usage{
 louvain_clustering_features(
   object,
@@ -66,9 +66,9 @@ distance matrix. Default is TRUE.}
 contains the feature ids. Default is "id".}
 }
 \value{
-a data.frame with two columns: "sample" and "cluster".
+a data.frame with feature ids, cluster labels, and within-cluster connectivity.
 }
 \description{
 A function that performs clustering (community detection) on features in a
-SummarizedExperiment object based on correlation.
+SummarizedExperiment object based on correlation across samples.
 }

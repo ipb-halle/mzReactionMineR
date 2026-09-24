@@ -1,4 +1,4 @@
-#' anovaLimma
+#' anova_limma
 #'
 #' A wrapper function that performs an ANOVA test on a summarized experiment using limma.
 #'
@@ -154,6 +154,3 @@ anova_limma <- function(object = NULL,
 
   return(anova_res[, c(return_colums, "F", "P.Value", "adj.P.Val"), drop = FALSE])
 }
-
-#' @export
-anovaLimma <- function(...) anova_limma(...)

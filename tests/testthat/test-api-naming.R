@@ -1,4 +1,4 @@
-test_that("camelCase APIs wrap snake_case implementations", {
+test_that("snake_case APIs are exported", {
   snake_case_names <- c(
     "anova_limma",
     "blank_subtraction_se",
@@ -14,8 +14,7 @@ test_that("camelCase APIs wrap snake_case implementations", {
     "remove_feature_mz"
     ,"qc_plots",
     "get_col_data",
-    "get_row_data",
-    "mzmine_alignment_qc"
+    "get_row_data"
   )
 
   expect_true(all(snake_case_names %in% getNamespaceExports("mzReactionMineR")))
@@ -38,9 +37,9 @@ test_that("camelCase APIs wrap snake_case implementations", {
     "mzmine_alignment_QC"
   )
 
-  expect_true(all(camel_case_names %in% getNamespaceExports("mzReactionMineR")))
+  expect_false(any(camel_case_names %in% getNamespaceExports("mzReactionMineR")))
   expect_true(all(vapply(
-    c(snake_case_names, camel_case_names),
+    snake_case_names,
     function(name) is.function(get(name, asNamespace("mzReactionMineR"))),
     logical(1)
   )))

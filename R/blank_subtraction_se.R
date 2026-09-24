@@ -1,4 +1,4 @@
-#' blankSubtractionSE
+#' blank_subtraction_se
 #'
 #' Use blank samples to filter features in a SummarizedExperiment object based on a specified ratio of sample signal to blank signal.
 #'
@@ -137,7 +137,5 @@ blank_subtraction_se <- function(
   return(result)
 }
 
-#' @export
-blankSubtractionSE <- function(...) blank_subtraction_se(...)
 
  utils::globalVariables(c(".",".data","Value"))

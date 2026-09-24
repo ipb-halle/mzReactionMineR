@@ -1,4 +1,4 @@
-#' contrastLimma
+#' contrast_limma
 #'
 #' A wrapper function that performs pairwise contrasts on a summarized experiment using limma.
 #'
@@ -183,8 +183,6 @@ contrast_limma <- function(object = NULL,
 
 }
 
-#' @export
-contrastLimma <- function(...) contrast_limma(...)
 
 utils::globalVariables(c(".data", "."))
 

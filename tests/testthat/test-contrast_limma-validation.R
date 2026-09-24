@@ -10,41 +10,41 @@ make_contrast_object <- function() {
   )
 }
 
-test_that("contrastLimma validates its object and assay", {
+test_that("contrast_limma validates its object and assay", {
   input_object <- data.frame()
 
   expect_error(
-    contrastLimma(object = input_object, assay = "intensity", contrast_variable = "group"),
+    contrast_limma(object = input_object, assay = "intensity", contrast_variable = "group"),
     "input_object.*SummarizedExperiment"
   )
 
   object <- make_contrast_object()
   expect_error(
-    contrastLimma(object = object, assay = "missing", contrast_variable = "group"),
+    contrast_limma(object = object, assay = "missing", contrast_variable = "group"),
     "assay.*name.*assay.*object"
   )
 })
 
-test_that("contrastLimma validates design and contrast levels", {
+test_that("contrast_limma validates design and contrast levels", {
   object <- make_contrast_object()
 
   expect_error(
-    contrastLimma(object = object, assay = "intensity", contrast_variable = "missing"),
+    contrast_limma(object = object, assay = "intensity", contrast_variable = "missing"),
     "design columns are missing"
   )
   expect_error(
-    contrastLimma(object = object, assay = "intensity", contrast_variable = "group", blocking_variables = "group"),
+    contrast_limma(object = object, assay = "intensity", contrast_variable = "group", blocking_variables = "group"),
     "Contrast and blocking variables"
   )
   expect_error(
-    contrastLimma(object = object, assay = "intensity", contrast_variable = "group", controls = "missing"),
+    contrast_limma(object = object, assay = "intensity", contrast_variable = "group", controls = "missing"),
     "levels from"
   )
 })
 
-test_that("contrastLimma validates its adjustment method", {
+test_that("contrast_limma validates its adjustment method", {
   expect_error(
-    contrastLimma(
+    contrast_limma(
       object = make_contrast_object(),
       assay = "intensity",
       contrast_variable = "group",

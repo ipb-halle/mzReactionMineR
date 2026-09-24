@@ -35,12 +35,6 @@ the weight for m/z in the alignment score calculation.}
 \item{rt_weight}{Numeric,
 the weight for retention time in the alignment score calculation.}
 
-\item{ims}{Logical, whether ion mobility should be included in the alignment.}
-
-\item{ion_mobility_tolerance}{Numeric, the tolerance for ion mobility alignment.}
-
-\item{ion_mobility_weight}{Numeric, the weight for ion mobility in the alignment score.}
-
 \item{id_col}{Character,
 the name of the column containing peak IDs.}
 
@@ -49,6 +43,12 @@ the name of the column containing retention times.}
 
 \item{mz_col}{Character,
 the name of the column containing m/z values.}
+
+\item{ims}{Logical, whether ion mobility should be included in the alignment.}
+
+\item{ion_mobility_tolerance}{Numeric, the tolerance for ion mobility alignment.}
+
+\item{ion_mobility_weight}{Numeric, the weight for ion mobility in the alignment score.}
 
 \item{ion_mobility_col}{Character,
 the name of the column containing ion mobility values.}

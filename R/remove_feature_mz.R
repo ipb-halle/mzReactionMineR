@@ -1,4 +1,4 @@
-#' removeFeatureMz
+#' remove_feature_mz
 #'
 #' Removes features from a SummarizedExperiment object based on m/z values.
 #' Useful for removing background signals (i.e. column bleed).
@@ -68,5 +68,3 @@ remove_feature_mz <- function(
 
 }
 
-#' @export
-removeFeatureMz <- function(...) remove_feature_mz(...)

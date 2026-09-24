@@ -2,7 +2,7 @@
 % Please edit documentation in R/knn_clustering_samples.R
 \name{knn_clustering_samples}
 \alias{knn_clustering_samples}
-\title{knnClusteringSamples}
+\title{knn_clustering_samples}
 \usage{
 knn_clustering_samples(
   object,
@@ -10,7 +10,7 @@ knn_clustering_samples(
   filter_type = "intensity",
   n_top = nrow(object),
   calc_PCA = TRUE,
-  min_PC = 5,
+  min_PC = 1,
   PC_var = 0.8,
   k = 5,
   resolution = 1,

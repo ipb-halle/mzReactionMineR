@@ -1,4 +1,4 @@
-#' filterSE
+#' filter_se_ims
 #'
 #' A function that filters a SummarizedExperiment object based on various
 #'     measures.
@@ -91,7 +91,5 @@ filter_se_ims <- function(
 
 }
 
-#' @export
-filterSe_ims <- function(...) filter_se_ims(...)
 
 utils::globalVariables(c(".",".data","Value"))

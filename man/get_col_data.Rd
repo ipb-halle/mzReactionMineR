@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_col_data.R
 \name{get_col_data}
 \alias{get_col_data}
-\title{get_colData}
+\title{get_col_data}
 \usage{
 get_col_data(object = NULL)
 }

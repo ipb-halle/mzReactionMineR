@@ -14,57 +14,57 @@ make_anova_object <- function() {
   )
 }
 
-test_that("anovaLimma validates its object and assay", {
+test_that("anova_limma validates its object and assay", {
   input_object <- data.frame()
 
   expect_error(
-    anovaLimma(object = input_object, assay = "intensity", test_variables = "group"),
+    anova_limma(object = input_object, assay = "intensity", test_variables = "group"),
     "input_object.*SummarizedExperiment"
   )
 
   object <- make_anova_object()
   expect_error(
-    anovaLimma(object = object, assay = "missing", test_variables = "group"),
+    anova_limma(object = object, assay = "missing", test_variables = "group"),
     "assay.*name.*assay.*object"
   )
 })
 
-test_that("anovaLimma validates design columns", {
+test_that("anova_limma validates design columns", {
   object <- make_anova_object()
 
   expect_error(
-    anovaLimma(object = object, assay = "intensity", test_variables = "missing"),
+    anova_limma(object = object, assay = "intensity", test_variables = "missing"),
     "design columns are missing"
   )
   expect_error(
-    anovaLimma(object = object, assay = "intensity", test_variables = "group", blocking_variables = "group"),
+    anova_limma(object = object, assay = "intensity", test_variables = "group", blocking_variables = "group"),
     "Test and blocking variables"
   )
 
   object_with_one_level <- make_anova_object()
   SummarizedExperiment::colData(object_with_one_level)$group <- factor("control")
   expect_error(
-    anovaLimma(object = object_with_one_level, assay = "intensity", test_variables = "group"),
+    anova_limma(object = object_with_one_level, assay = "intensity", test_variables = "group"),
     "at least two unique values"
   )
 
   object_with_na <- make_anova_object()
   SummarizedExperiment::colData(object_with_na)$group[1] <- NA
   expect_error(
-    anovaLimma(object = object_with_na, assay = "intensity", test_variables = "group"),
+    anova_limma(object = object_with_na, assay = "intensity", test_variables = "group"),
     "must not contain missing values"
   )
 })
 
-test_that("anovaLimma validates result and adjustment arguments", {
+test_that("anova_limma validates result and adjustment arguments", {
   object <- make_anova_object()
 
   expect_error(
-    anovaLimma(object = object, assay = "intensity", test_variables = "group", padj_method = "invalid"),
+    anova_limma(object = object, assay = "intensity", test_variables = "group", padj_method = "invalid"),
     "padj_method.*valid"
   )
   expect_error(
-    anovaLimma(object = object, assay = "intensity", test_variables = "group", return_colums = "missing"),
+    anova_limma(object = object, assay = "intensity", test_variables = "group", return_colums = "missing"),
     "return columns are missing"
   )
 })
