@@ -1,7 +1,7 @@
-#' impute_min_frac
+#' Missing value imputation based on a fraction of the minimum value.
 #'
 #' Function to impute missing values in a SummarizedExperiment assay with a
-#' fraction of the minimum value for each row.
+#' fraction of the minimum value for each row. The fraction can be defined by the user.
 #'
 #' @param object A SummarizedExperiment object
 #' @param assay The assay to impute

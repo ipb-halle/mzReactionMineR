@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_col_data.R
 \name{get_col_data}
 \alias{get_col_data}
-\title{get_col_data}
+\title{Create a data.frame format of the colData from a SummarizedExperiment object.}
 \usage{
 get_col_data(object = NULL)
 }

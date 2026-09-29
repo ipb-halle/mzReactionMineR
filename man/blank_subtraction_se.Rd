@@ -2,7 +2,7 @@
 % Please edit documentation in R/blank_subtraction_se.R
 \name{blank_subtraction_se}
 \alias{blank_subtraction_se}
-\title{blank_subtraction_se}
+\title{Remove blank features from a SummarizedExperiment}
 \usage{
 blank_subtraction_se(
   object = NULL,
@@ -40,4 +40,9 @@ A SummarizedExperiment object with features filtered based on the specified rati
 }
 \description{
 Use blank samples to filter features in a SummarizedExperiment object based on a specified ratio of sample signal to blank signal.
+}
+\details{
+Features are removed based on the specified ratio between the sample and blank signal intensity.
+The ratio is calculated either on the maximum, mean or median signal intensity across the actual sample or blank samples.
+The function allows to define a minimum number of blank samples a feature needed to be detected in before removing any feature.
 }

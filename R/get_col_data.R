@@ -1,4 +1,4 @@
-#' get_col_data
+#' Create a data.frame format of the colData from a SummarizedExperiment object.
 #'
 #' Convenience function that extracts the colData from a SummarizedExperiment
 #'     object as a data.frame

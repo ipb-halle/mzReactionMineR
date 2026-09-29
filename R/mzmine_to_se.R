@@ -1,4 +1,4 @@
-#' mzmine_to_se
+#' Convert mzMine feature table to a SummarizedExperiment object.
 #'
 #' Convert mzMine feature table to a SummarizedExperiment object. Assumes the
 #'     "Export to CSV (modular)" was used.

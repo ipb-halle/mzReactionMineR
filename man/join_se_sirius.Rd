@@ -2,7 +2,7 @@
 % Please edit documentation in R/join_se_sirius.R
 \name{join_se_sirius}
 \alias{join_se_sirius}
-\title{join_se_sirius}
+\title{Join a SummarizedExperiment object with SIRIUS output.}
 \usage{
 join_se_sirius(object = NULL, path_to_sirius = NULL, id_col = "id")
 }

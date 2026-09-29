@@ -1,4 +1,4 @@
-#' normalize_is
+#' Internal standard normalization.
 #'
 #' A function to normalize the intensities of an assay in a SummarizedExperiment
 #'  object based on the intensities of an internal standard. The internal

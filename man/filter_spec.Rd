@@ -2,9 +2,7 @@
 % Please edit documentation in R/filter_spec.R
 \name{filter_spec}
 \alias{filter_spec}
-\title{filter_spec
-A function that filters a spectrum object based on the number of peaks and
-intensity threshold.}
+\title{Filter MS/MS spectra based on number of peaks and intensity threshold}
 \usage{
 filter_spec(
   sps,
@@ -44,7 +42,8 @@ Choses the most intense peaks if more than max_peaks are present.}
 A spectrum object with filtered peaks.
 }
 \description{
-filter_spec
-A function that filters a spectrum object based on the number of peaks and
-intensity threshold.
+A wrapper function that utilizes the Spectra package to filter MS/MS spectra
+based on the number of peaks and intensity thresholds. It allows for the
+removal of precursor peaks and ensures that the resulting spectra meet
+specified criteria for peak count and intensity.
 }

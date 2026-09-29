@@ -2,7 +2,7 @@
 % Please edit documentation in R/contrast_limma.R
 \name{contrast_limma}
 \alias{contrast_limma}
-\title{contrast_limma}
+\title{Calculate pairwise contrasts using limma}
 \usage{
 contrast_limma(
   object = NULL,
@@ -31,4 +31,7 @@ A data.frame containing the feature metadata and pairwise limma results.
 }
 \description{
 A wrapper function that performs pairwise contrasts on a summarized experiment using limma.
+The function tests for differences between levels of a specified contrast
+variable while optionally controlling for blocking factors. If controls are specified,
+the function will only test contrasts between the control levels and the other levels of the contrast variable.
 }

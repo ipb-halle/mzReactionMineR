@@ -1,4 +1,4 @@
-#' remove_feature_mz
+#' Remove features absed on specific m/z values.
 #'
 #' Removes features from a SummarizedExperiment object based on m/z values.
 #' Useful for removing background signals (i.e. column bleed).

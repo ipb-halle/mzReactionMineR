@@ -1,4 +1,4 @@
-#' knn_clustering_samples
+#' Clustering of samples based on a knn-graph and community detection.
 #'
 #' A function that performs clustering (community detection) on samples in a
 #' SummarizedExperiment object based on a k-nearest neighbor graph.
@@ -11,10 +11,10 @@
 #' @param object a SummarizedExperiment object
 #' @param assay Character. The name of the assay to be used for clustering.
 #' @param filter_type Character. The method to select features for clustering.
-#'        Must be either "intsnity" or "variance". Default is "area".
+#'        Must be either "intensity" or "variance". Default is "intensity".
 #' @param n_top Integer. The number of features to select based on
 #'        filter_type.
-#' @param calc_PCA Logical. Wether to perform PCA before clustering.
+#' @param calc_PCA Logical. Whether to perform PCA before clustering.
 #'        Default is TRUE.
 #' @param min_PC Integer. The minimum number of PCs to retain. Default is 5.
 #' @param PC_var Numeric. The minimum cumulative variance that the retained PCs should explain.

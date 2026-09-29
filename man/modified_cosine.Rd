@@ -2,7 +2,7 @@
 % Please edit documentation in R/modified_cosine.R
 \name{modified_cosine}
 \alias{modified_cosine}
-\title{modified cosine.}
+\title{Calculate pairwise modified Cosine scores for a Spectra object.}
 \usage{
 modified_cosine(sps, tolerance = 0, ppm = 10)
 }

@@ -1,7 +1,9 @@
-#' se_to_long
+#' Convert a SummarizedExperiment to a long-form data.frame
 #'
-#' Generates a long form data.frame from a summarized experiment produced by
-#'     mzmine_to_se
+#' Generates a long form data.frame from a SummarizedExperiment object. Returns
+#' a data.frame with the rowData, colData, and assay values in long format. The
+#' assay values are stored in a column named "value", and the sample names
+#' are stored in a column named according to the 'filename' argument.
 #'
 #' @importFrom dplyr %>% inner_join
 #' @importFrom tidyr pivot_longer

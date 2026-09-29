@@ -117,42 +117,6 @@ test_that("filter_se optionally filters by ion mobility", {
   )
 })
 
-test_that("filter_se_ims delegates to filter_se with ion mobility", {
-  object <- make_filter_object()
-
-  result <- filter_se_ims(
-    object = object,
-    assay = "intensity",
-    min_pct = 0,
-    mobility_range = c(1, 1.5)
-  )
-
-  expect_identical(
-    SummarizedExperiment::rowData(result)$id,
-    "feature2"
-  )
-})
-
-test_that("filter_se_ims forwards grouped and total abundance filters", {
-  object <- make_filter_object()
-
-  result <- filter_se_ims(
-    object = object,
-    assay = "intensity",
-    group_col = "group",
-    min_pct_total = 1,
-    min_n_total = 4L,
-    min_pct_group = 1,
-    min_n_group = 2L,
-    min_count_rule = "or"
-  )
-
-  expect_identical(
-    SummarizedExperiment::rowData(result)$id,
-    c("feature1", "feature3")
-  )
-})
-
 test_that("filter_se validates object and assay inputs", {
   object <- make_filter_object()
   input_object <- data.frame()

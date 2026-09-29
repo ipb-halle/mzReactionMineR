@@ -2,7 +2,7 @@
 % Please edit documentation in R/mzmine_to_se.R
 \name{mzmine_to_se}
 \alias{mzmine_to_se}
-\title{mzmine_to_se}
+\title{Convert mzMine feature table to a SummarizedExperiment object.}
 \usage{
 mzmine_to_se(
   path_to_file,

@@ -1,4 +1,4 @@
-#' louvain_clustering_features
+#' Clustering of features based on a correlation graph and community detection.
 #'
 #' A function that performs clustering (community detection) on features in a
 #' SummarizedExperiment object based on correlation across samples.
@@ -21,12 +21,12 @@
 #' @param type Either "pos", "neg", or "both". What kinds of correlation will be
 #'        used for the graph: only positive, only negative or both.
 #' @param filter_type Character. The method to select features for clustering.
-#'        Must be either "intsnity" or "variance". Default is "area".
+#'        Must be either "intensity" or "variance". Default is "intensity".
 #' @param n_top Integer. The number of features to select based on
 #'        filter_type.
 #' @param return_removed Logical. Whether to return features removed during the clustering process.
 #'        removed features will be added as cluster -1.
-#' @param calc_PCA Logical. Wether to perform PCA before clustering.
+#' @param calc_PCA Logical. Whether to perform PCA before clustering.
 #'        Default is TRUE.
 #' @param min_PC Integer. The minimum number of PCs to retain. Default is 5.
 #' @param PC_var Numeric. The minimum cumulative variance that the retained PCs should explain.

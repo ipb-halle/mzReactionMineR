@@ -1,6 +1,9 @@
-#' contrast_limma
+#' Calculate pairwise contrasts using limma
 #'
 #' A wrapper function that performs pairwise contrasts on a summarized experiment using limma.
+#' The function tests for differences between levels of a specified contrast
+#' variable while optionally controlling for blocking factors. If controls are specified,
+#' the function will only test contrasts between the control levels and the other levels of the contrast variable.
 #'
 #' @importFrom dplyr %>% mutate bind_rows
 #' @importFrom limma lmFit eBayes topTable makeContrasts contrasts.fit

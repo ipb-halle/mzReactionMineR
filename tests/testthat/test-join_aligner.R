@@ -115,31 +115,6 @@ test_that("join_aligner returns colData in output sample order", {
   expect_identical(as.data.frame(SummarizedExperiment::colData(result))$batch, c("b", "a"))
 })
 
-test_that("join_aligner_ims returns a SummarizedExperiment", {
-  object <- make_join_aligner_se(
-    sample_names = c("first", "second"),
-    feature_id = c("a", "b"),
-    rt = c(1, 5),
-    mz = c(100, 200),
-    mobility = c(1, 2),
-    assays = list(area = matrix(
-      c(10, 20, 11, 21),
-      nrow = 2,
-      dimnames = list(NULL, c("first", "second"))
-    ))
-  )
-
-  result <- join_aligner_ims(
-    object,
-    ion_mobility_col = "mobility",
-    mz_tolerance = c(0.05, 20),
-    rt_tolerance = 0.2
-  )
-
-  expect_s4_class(result, "SummarizedExperiment")
-  expect_true("mobility" %in% names(SummarizedExperiment::rowData(result)))
-  expect_identical(names(SummarizedExperiment::assays(result)), "area")
-})
 
 test_that("join_aligner validates SummarizedExperiment inputs", {
   one_sample <- make_join_aligner_se(

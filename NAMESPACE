@@ -5,13 +5,11 @@ export(blank_subtraction_se)
 export(contrast_limma)
 export(feature_table_to_se)
 export(filter_se)
-export(filter_se_ims)
 export(filter_spec)
 export(get_col_data)
 export(get_row_data)
 export(impute_min_frac)
 export(join_aligner)
-export(join_aligner_ims)
 export(join_se_sirius)
 export(knn_clustering_samples)
 export(louvain_clustering_features)
@@ -49,6 +47,7 @@ importFrom(SummarizedExperiment,
   "assays<-",
   "rowData<-",
   SummarizedExperiment,
+  assayNames,
   assays,
   colData,
   rowData

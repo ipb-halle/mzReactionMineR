@@ -2,7 +2,7 @@
 % Please edit documentation in R/filter_se.R
 \name{filter_se}
 \alias{filter_se}
-\title{filter_se}
+\title{Filter an MS experiment stored in a SummarizedExperiment object based on various measures.}
 \usage{
 filter_se(
   object = NULL,
@@ -10,7 +10,7 @@ filter_se(
   sample_col = "filename",
   group_col = "none",
   not_in = "none",
-  min_abundance = 0,
+  min_intensity = 0,
   min_pct = 0.8,
   min_n = 1L,
   min_pct_total = min_pct,
@@ -41,13 +41,13 @@ that corresponds to the assay columns}
 \item{not_in}{Character. Either "none" or a value in the group_col.
 Specify, if an id should not be present in a group.}
 
-\item{min_abundance}{Numeric [0,1]. Minimum value in assay for a feature. Values
+\item{min_intensity}{Numeric. Minimum value in assay for a feature. Values
 below are treated as absent. Default is 0.}
 
 \item{min_pct}{Numeric. Minimum ratio of samples a feature must be
 present in. If group_col is specified, the ratio is calculated for
 for each group. If min_n is specified, the larger value will be used.
-This is applied after filtering for min_abundance.}
+This is applied after filtering for min_intensity.}
 
 \item{min_n}{Integer. Minimum number of samples a feature must be
 present in. If group_col is specified, the percentage is calculated for
@@ -80,7 +80,7 @@ of kept ion mobility values. If NULL, ion mobility is not used for
 filtering.}
 
 \item{specific_mz}{Numeric vector or "none". remove rows that do not have a
-specific m/z value. This is applied after filtering for min_abundance.}
+specific m/z value. This is applied after filtering for min_intensity.}
 
 \item{id_col}{Character. The respective column name in the rowData.}
 
@@ -94,6 +94,12 @@ specific m/z value. This is applied after filtering for min_abundance.}
 A filtered summarizeExperiment object
 }
 \description{
-A function that filters a SummarizedExperiment object based on various
-measures.
+This function allow filtering feature in a SummarizedExperiment object based on
+different properties:
+\itemize{
+\item Minimum percentage of samples a feature must be higher than min_intensity in. Per group and/or overall.
+\item Minimum number of samples a feature must be higher than min_intensity in. Per group and/or overall.
+\item Features absent in a specific group.
+\item Range of kept m/z, rt, and ion mobility values.
+}
 }

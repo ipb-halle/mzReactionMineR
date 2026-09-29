@@ -2,7 +2,7 @@
 % Please edit documentation in R/louvain_clustering_features.R
 \name{louvain_clustering_features}
 \alias{louvain_clustering_features}
-\title{louvain_clustering_features}
+\title{Clustering of features based on a correlation graph and community detection.}
 \usage{
 louvain_clustering_features(
   object,
@@ -44,7 +44,7 @@ metric to use for calculating the correlation matrix. Default is "pearson".}
 used for the graph: only positive, only negative or both.}
 
 \item{filter_type}{Character. The method to select features for clustering.
-Must be either "intsnity" or "variance". Default is "area".}
+Must be either "intensity" or "variance". Default is "intensity".}
 
 \item{n_top}{Integer. The number of features to select based on
 filter_type.}
@@ -52,7 +52,7 @@ filter_type.}
 \item{return_removed}{Logical. Whether to return features removed during the clustering process.
 removed features will be added as cluster -1.}
 
-\item{calc_PCA}{Logical. Wether to perform PCA before clustering.
+\item{calc_PCA}{Logical. Whether to perform PCA before clustering.
 Default is TRUE.}
 
 \item{min_PC}{Integer. The minimum number of PCs to retain. Default is 5.}

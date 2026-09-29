@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_is.R
 \name{plot_is}
 \alias{plot_is}
-\title{Title}
+\title{Plot internal standard intensity across the run index}
 \usage{
 plot_is(
   object,
@@ -46,5 +46,5 @@ the internal standard.}
 a ggplot object
 }
 \description{
-Title
+Plot internal standard intensity across the run index
 }

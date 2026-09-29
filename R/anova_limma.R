@@ -1,6 +1,8 @@
-#' anova_limma
+#' Calculate an ANOVA test using limma
 #'
 #' A wrapper function that performs an ANOVA test on a summarized experiment using limma.
+#' The function is capable of testing multiple variables while controlling for blocking factors.
+#' It returns a data frame containing the requested feature metadata and the limma F-statistic, raw p-value, and adjusted p-value.
 #'
 #' @importFrom limma lmFit eBayes topTable
 #' @importFrom stats contr.sum as.formula model.matrix contrasts<-

@@ -2,7 +2,7 @@
 % Please edit documentation in R/impute_min_frac.R
 \name{impute_min_frac}
 \alias{impute_min_frac}
-\title{impute_min_frac}
+\title{Missing value imputation based on a fraction of the minimum value.}
 \usage{
 impute_min_frac(object, assay, fraction = 5, new_assay_name = "imputed")
 }
@@ -21,5 +21,5 @@ a SummarizedExperiment object with a new assay containing the imputed values
 }
 \description{
 Function to impute missing values in a SummarizedExperiment assay with a
-fraction of the minimum value for each row.
+fraction of the minimum value for each row. The fraction can be defined by the user.
 }

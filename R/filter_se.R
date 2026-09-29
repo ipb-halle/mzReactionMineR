@@ -1,7 +1,12 @@
-#' filter_se
+#' Filter an MS experiment stored in a SummarizedExperiment object based on various measures.
 #'
-#' A function that filters a SummarizedExperiment object based on various
-#'     measures.
+#' This function allow filtering feature in a SummarizedExperiment object based on
+#' different properties:
+#'  - Minimum percentage of samples a feature must be higher than min_intensity in. Per group and/or overall.
+#'  - Minimum number of samples a feature must be higher than min_intensity in. Per group and/or overall.
+#'  - Features absent in a specific group.
+#'  - Range of kept m/z, rt, and ion mobility values.
+#'
 #'
 #' @importFrom dplyr %>% mutate filter group_by summarize ungroup pull n inner_join
 #' @importFrom tidyr pivot_longer
@@ -15,12 +20,12 @@
 #' @param group_col Character. Either "none" or a columnname in the colData
 #' @param not_in Character. Either "none" or a value in the group_col.
 #'     Specify, if an id should not be present in a group.
-#' @param min_abundance Numeric \[0,1\]. Minimum value in assay for a feature. Values
+#' @param min_intensity Numeric. Minimum value in assay for a feature. Values
 #'     below are treated as absent. Default is 0.
 #' @param min_pct Numeric. Minimum ratio of samples a feature must be
 #'     present in. If group_col is specified, the ratio is calculated for
 #'     for each group. If min_n is specified, the larger value will be used.
-#'     This is applied after filtering for min_abundance.
+#'     This is applied after filtering for min_intensity.
 #' @param min_n Integer. Minimum number of samples a feature must be
 #'     present in. If group_col is specified, the percentage is calculated for
 #'     for each group. If min_pct is specified, this is ignored, the larger value
@@ -43,7 +48,7 @@
 #'     of kept ion mobility values. If NULL, ion mobility is not used for
 #'     filtering.
 #' @param specific_mz Numeric vector or "none". remove rows that do not have a
-#'     specific m/z value. This is applied after filtering for min_abundance.
+#'     specific m/z value. This is applied after filtering for min_intensity.
 #' @param id_col Character. The respective column name in the rowData.
 #' @param rt_col Character. The respective column name in the rowData.
 #' @param mz_col Character. The respective column name in the rowData.
@@ -57,7 +62,7 @@ filter_se <- function(
   sample_col = "filename",
   group_col = "none",
   not_in = "none",
-  min_abundance = 0,
+  min_intensity = 0,
   min_pct = 0.8,
   min_n = 1L,
   min_pct_total = min_pct,
@@ -122,9 +127,9 @@ filter_se <- function(
     stop("'not_in' can only be used when 'group_col' names a colData(", object_name, ") column.", call. = FALSE)
   }
 
-  if(length(min_abundance) != 1L || !is.numeric(min_abundance) ||
-     is.na(min_abundance) || !is.finite(min_abundance) || min_abundance < 0) {
-    stop("'min_abundance' must be a single non-negative finite number.", call. = FALSE)
+  if(length(min_intensity) != 1L || !is.numeric(min_intensity) ||
+     is.na(min_intensity) || !is.finite(min_intensity) || min_intensity < 0) {
+    stop("'min_intensity' must be a single non-negative finite number.", call. = FALSE)
   }
 
   pct_arguments <- list(
@@ -250,7 +255,7 @@ filter_se <- function(
       values_to = "Value"
     ) %>%
     mutate(
-      Value = as.integer(.data$Value > min_abundance)
+      Value = as.integer(.data$Value > min_intensity)
     ) %>%
     inner_join(
       sample_data,

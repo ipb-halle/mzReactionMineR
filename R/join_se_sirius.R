@@ -1,4 +1,4 @@
-#' join_se_sirius
+#' Join a SummarizedExperiment object with SIRIUS output.
 #'
 #' A convenience function that joins a SIRIUS output file to a
 #' SummarizedExperiment object.

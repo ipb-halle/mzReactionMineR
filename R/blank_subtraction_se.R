@@ -1,6 +1,10 @@
-#' blank_subtraction_se
+#' Remove blank features from a SummarizedExperiment
 #'
 #' Use blank samples to filter features in a SummarizedExperiment object based on a specified ratio of sample signal to blank signal.
+#'
+#' Features are removed based on the specified ratio between the sample and blank signal intensity.
+#' The ratio is calculated either on the maximum, mean or median signal intensity across the actual sample or blank samples.
+#' The function allows to define a minimum number of blank samples a feature needed to be detected in before removing any feature.
 #'
 #' @importFrom dplyr %>% mutate group_by
 #' @importFrom SummarizedExperiment SummarizedExperiment assays rowData colData

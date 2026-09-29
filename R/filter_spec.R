@@ -1,6 +1,9 @@
-#' filter_spec
-#' A function that filters a spectrum object based on the number of peaks and
-#'     intensity threshold.
+#' Filter MS/MS spectra based on number of peaks and intensity threshold
+#'
+#' A wrapper function that utilizes the Spectra package to filter MS/MS spectra
+#' based on the number of peaks and intensity thresholds. It allows for the
+#' removal of precursor peaks and ensures that the resulting spectra meet
+#' specified criteria for peak count and intensity.
 #'
 #' @importFrom Spectra filterIntensity applyProcessing mz intensity filterMzValues filterPrecursorPeaks
 #' @param sps spectrum object. Input data

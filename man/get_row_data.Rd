@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_row_data.R
 \name{get_row_data}
 \alias{get_row_data}
-\title{get_row_data}
+\title{Create a data.frame format of the rowData from a SummarizedExperiment object.}
 \usage{
 get_row_data(object = NULL)
 }

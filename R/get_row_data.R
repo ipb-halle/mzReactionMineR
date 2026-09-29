@@ -1,4 +1,4 @@
-#' get_row_data
+#' Create a data.frame format of the rowData from a SummarizedExperiment object.
 #'
 #' Convenience function that extracts the rowData from a SummarizedExperiment
 #'     object as a data.frame

@@ -1,4 +1,4 @@
-#' Title
+#' Plot internal standard intensity across the run index
 #'
 #' @param object A SummarizedExperiment object
 #' @param assay Character. The name of the assay to be normalized.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/knn_clustering_samples.R
 \name{knn_clustering_samples}
 \alias{knn_clustering_samples}
-\title{knn_clustering_samples}
+\title{Clustering of samples based on a knn-graph and community detection.}
 \usage{
 knn_clustering_samples(
   object,
@@ -25,12 +25,12 @@ knn_clustering_samples(
 \item{assay}{Character. The name of the assay to be used for clustering.}
 
 \item{filter_type}{Character. The method to select features for clustering.
-Must be either "intsnity" or "variance". Default is "area".}
+Must be either "intensity" or "variance". Default is "intensity".}
 
 \item{n_top}{Integer. The number of features to select based on
 filter_type.}
 
-\item{calc_PCA}{Logical. Wether to perform PCA before clustering.
+\item{calc_PCA}{Logical. Whether to perform PCA before clustering.
 Default is TRUE.}
 
 \item{min_PC}{Integer. The minimum number of PCs to retain. Default is 5.}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/anova_limma.R
 \name{anova_limma}
 \alias{anova_limma}
-\title{anova_limma}
+\title{Calculate an ANOVA test using limma}
 \usage{
 anova_limma(
   object = NULL,
@@ -36,4 +36,6 @@ limma F-statistic, raw p-value, and adjusted p-value.
 }
 \description{
 A wrapper function that performs an ANOVA test on a summarized experiment using limma.
+The function is capable of testing multiple variables while controlling for blocking factors.
+It returns a data frame containing the requested feature metadata and the limma F-statistic, raw p-value, and adjusted p-value.
 }

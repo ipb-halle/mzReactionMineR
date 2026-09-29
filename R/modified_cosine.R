@@ -1,4 +1,4 @@
-#' modified cosine.
+#' Calculate pairwise modified Cosine scores for a Spectra object.
 #'
 #' A wrapper function to calculate all pairwise modified cosine scores based on
 #'     the Spectra package.
