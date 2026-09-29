@@ -1,12 +1,16 @@
 Package: mzReactionMineR
-Title: Functions for the statistical analysis of mass spectrometry data to
-    to detect new compounds in biotransformation experiments
-Version: 0.0.0.9000
+Title: R package for downstream analysis of mass spectrometry data after peak 
+    picking with external software.
+Version: 0.9
 Authors@R: 
     person("David", "Rüscher", , "ruescher.david@gmail.com", role = c("aut", "cre"))
-Description: This package contains various functions used during analysis of 
-    different metabolomics experiments. The main use is to simplify statistical
-    workflows of output from other software like MZmine.
+Description: mzReactionMineR is an R package for the analysis of metabolomics 
+    data that was pre-processed using external software outside of R 
+    (i.e. mzmine, MetaboScape). As its base it utilizes the default 
+    SummarizedExperiment object to allow for seamless integration to other R 
+    packages. Furthermore, it keeps the relatioship between sample and feature
+    meta data with the measured data stable, minimizing the risk of processing 
+    errors.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -23,13 +27,14 @@ Imports:
     stats,
     Spectra,
     MsCoreUtils,
-	igraph
+	  igraph
 Additional_repositories: 
     https://bioconductor.org/packages/3.21/bioc
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    S4Vectors
 Config/testthat/edition: 3
 RemoteType: local
 RemotePkgRef: local::../../packages/mzReactionMineR/
 RemoteUrl: C:/Users/druesche/Documents/packages/mzReactionMineR
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0

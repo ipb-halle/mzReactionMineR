@@ -2,7 +2,7 @@
 % Please edit documentation in R/se_to_long.R
 \name{se_to_long}
 \alias{se_to_long}
-\title{se_to_long}
+\title{Convert a SummarizedExperiment to a long-form data.frame}
 \usage{
 se_to_long(object, assay, filename = "filename")
 }
@@ -17,6 +17,8 @@ se_to_long(object, assay, filename = "filename")
 a data.frame in long format
 }
 \description{
-Generates a long form data.frame from a summarized experiment produced by
-mzmine_to_se
+Generates a long form data.frame from a SummarizedExperiment object. Returns
+a data.frame with the rowData, colData, and assay values in long format. The
+assay values are stored in a column named "value", and the sample names
+are stored in a column named according to the 'filename' argument.
 }
