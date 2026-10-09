@@ -63,4 +63,4 @@ The package consist of many different functionalities, ranging from reading to m
 
 # Funding
 
-Funded by the **German Federal Ministry of Education and Research** and the state of **Saxony-Anhalt** as part of the project **DiP-NA-WIR**.
+Funded by the **German Federal Ministry of Research, Technology and Space** and the state of **Saxony-Anhalt** as part of the project **DiP-NA-WIR**.
